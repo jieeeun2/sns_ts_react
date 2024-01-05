@@ -10,7 +10,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write --cache .",
-    "lint": "eslint --cache ."
+    "lint": "eslint --cache .",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "react": "^18.2.0",
