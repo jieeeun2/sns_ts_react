@@ -13,6 +13,9 @@
     "lint": "eslint --cache .",
     "postinstall": "husky install"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": ["npm run format", "npm run lint"]
+  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
