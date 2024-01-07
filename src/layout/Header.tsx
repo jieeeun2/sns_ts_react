@@ -33,31 +33,33 @@ const Header = () => {
 
   return (
     <HeaderLayout>
-      <LogoBox>
-        <Link to='/' className='logo'>
-          <h1>SOCIOPEDIA</h1>
-        </Link>
-        <SearchSection>
-          <Input onChange={changeSearchText} placeholder='search...' />
-          <Button onClick={search}>
-            <FiSearch className='icon' />
+      <div>
+        <LogoBox>
+          <Link to='/' className='logo'>
+            <h1>SOCIOPEDIA</h1>
+          </Link>
+          <SearchSection>
+            <Input onChange={changeSearchText} placeholder='search...' />
+            <Button onClick={search}>
+              <FiSearch className='icon' />
+            </Button>
+          </SearchSection>
+        </LogoBox>
+        <MenuBox>
+          <Button onClick={changeMode}>
+            {mode === 'dark' ? <MdDarkMode className='icon' /> : <MdLightMode className='icon' />}
           </Button>
-        </SearchSection>
-      </LogoBox>
-      <MenuBox>
-        <Button onClick={changeMode}>
-          {mode === 'dark' ? <MdDarkMode className='icon' /> : <MdLightMode className='icon' />}
-        </Button>
-        <Button onClick={checkNotification}>
-          <IoIosNotifications className='icon' />
-        </Button>
-        <Button onClick={checkMessage}>
-          <MdMessage className='icon' />
-        </Button>
-        <Button onClick={checkHelp}>
-          <MdHelp className='icon' />
-        </Button>
-      </MenuBox>
+          <Button onClick={checkNotification}>
+            <IoIosNotifications className='icon' />
+          </Button>
+          <Button onClick={checkMessage}>
+            <MdMessage className='icon' />
+          </Button>
+          <Button onClick={checkHelp}>
+            <MdHelp className='icon' />
+          </Button>
+        </MenuBox>
+      </div>
     </HeaderLayout>
   )
 }
@@ -66,8 +68,16 @@ export default Header
 
 const HeaderLayout = styled(FlexBetween)`
   background: ${({ theme }) => theme.background.alt};
-  height: 60px;
-  padding: 1rem 6%;
+  height: 90px;
+  width: 100%;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 72px;
+    width: 100%;
+  }
 
   .icon {
     color: ${({ theme }) => theme.neutral.dark};
@@ -79,7 +89,6 @@ const LogoBox = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  width: 100%;
 
   .logo {
     text-decoration: none;
