@@ -35,7 +35,7 @@ const Header = () => {
     <HeaderLayout>
       <LogoBox>
         <Link to='/' className='logo'>
-          <h1>sociopedia</h1>
+          <h1>SOCIOPEDIA</h1>
         </Link>
         <SearchSection>
           <Input onChange={changeSearchText} placeholder='search...' />
