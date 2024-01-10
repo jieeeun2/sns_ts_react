@@ -1,7 +1,7 @@
-import React from 'react'
+import PostWidget from 'components/home/PostWidget'
 
 const PostListWidget = () => {
-  return <div>PostListWidget</div>
+  return <PostWidget />
 }
 
 export default PostListWidget

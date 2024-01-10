@@ -19,7 +19,6 @@ export const Input = styled.input`
 `
 
 export const Textarea = styled.textarea`
-  background: transparent;
   border: none;
   border-radius: 8px;
   background: ${({ theme }) => theme.neutral.light};
@@ -76,6 +75,7 @@ export const Span = styled.span`
   font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => theme.neutral.mediumMain};
+  white-space: nowrap;
 
   &.bold {
     font-weight: 700;
