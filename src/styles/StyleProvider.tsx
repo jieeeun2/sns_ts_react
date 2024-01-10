@@ -9,7 +9,7 @@ interface ModeProviderProps {
   children: ReactNode
 }
 
-const ModeProvider: FC<ModeProviderProps> = ({ children }) => {
+const StyleProvider: FC<ModeProviderProps> = ({ children }) => {
   const mode = useSelector((state: RootState) => state.mode.mode)
   const theme = themeSettings(mode)
 
@@ -21,4 +21,4 @@ const ModeProvider: FC<ModeProviderProps> = ({ children }) => {
   )
 }
 
-export default ModeProvider
+export default StyleProvider

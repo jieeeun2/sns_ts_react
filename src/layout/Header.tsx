@@ -6,7 +6,7 @@ import { MdDarkMode, MdLightMode, MdMessage, MdHelp } from 'react-icons/md'
 import { IoIosNotifications } from 'react-icons/io'
 import { RootState } from 'store'
 import { setMode } from 'store/modeSlice'
-import { Input, Button, FlexBetween } from 'styles/reuseableStyles'
+import { Input, Button, FlexBetween } from 'styles/ReuseableComponent'
 import { Link } from 'react-router-dom'
 
 const Header = () => {

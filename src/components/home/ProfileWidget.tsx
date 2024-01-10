@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { MdOutlineManageAccounts, MdOutlineLocationOn, MdOutlineWorkOutline } from 'react-icons/md'
-import { Button, FlexBetween, Hr, WidgetLayout } from 'styles/reuseableStyles'
+import { Button, FlexBetween, Hr, WidgetLayout } from 'styles/ReuseableComponent'
 
 const ProfileWidget = () => {
   return (
