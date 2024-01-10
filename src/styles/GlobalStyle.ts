@@ -21,6 +21,35 @@ const GlobalStyle = createGlobalStyle`
   h6 {
     margin: 0;
   }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    background: ${({ theme }) => theme.neutral.light};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.neutral.medium};
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.neutral.light};
+    border-radius: 8px;
+  }
+
+  textarea {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: ${({ theme }) => theme.neutral.main};
+    }
+
+    &::-webkit-scrollbar-track {
+      background: ${({ theme }) => theme.neutral.medium};
+    }
+  }
 `
 
 export default GlobalStyle
