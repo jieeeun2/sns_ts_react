@@ -25,19 +25,6 @@ export default HomePage
 
 const HomePageLayout = styled.div`
   height: calc(100dvh - 90px);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 8px;
-
-  & > div:nth-child(1) {
-    grid-column: span 1;
-  }
-
-  & > div:nth-child(2) {
-    grid-column: span 2;
-  }
-
-  & > div:nth-child(1) {
-    grid-column: span 1;
-  }
+  display: flex;
+  background: ${({ theme }) => theme.background.default};
 `

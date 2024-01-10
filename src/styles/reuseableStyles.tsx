@@ -20,3 +20,15 @@ export const Button = styled.button`
   background: transparent;
   border: none;
 `
+
+export const WidgetLayout = styled.div`
+  padding: 8px;
+  background: ${({ theme }) => theme.background.alt};
+  border-radius: 8px;
+`
+
+export const Hr = styled.hr`
+  border: 0 solid ${({ theme }) => theme.neutral.medium};
+  border-bottom-width: thin;
+  margin: 0 12px;
+`
