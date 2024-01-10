@@ -1,18 +1,13 @@
 import styled from 'styled-components'
 import { MdOutlineManageAccounts, MdOutlineLocationOn, MdOutlineWorkOutline } from 'react-icons/md'
 import { IconButton, FlexBetween, Hr, WidgetLayout, Span } from 'styles/ReuseableComponent'
+import Profile from 'components/common/Profile'
 
 const ProfileWidget = () => {
   return (
     <ProfileWidgetLayout>
       <UserInfoBox>
-        <UserInfoSection>
-          <img src='/images/profileImage.jpg' />
-          <div>
-            <h3>관리자</h3>
-            <Span>친구수 N명</Span>
-          </div>
-        </UserInfoSection>
+        <Profile isProfileWidget={true} />
         <IconButton>
           <MdOutlineManageAccounts className='icon' />
         </IconButton>
@@ -59,18 +54,6 @@ const ProfileWidgetLayout = styled(WidgetLayout)`
 `
 
 const UserInfoBox = styled(FlexBetween)``
-
-const UserInfoSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  & > img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-  }
-`
 
 const UserInfoDetailBox = styled.div`
   & > div {
