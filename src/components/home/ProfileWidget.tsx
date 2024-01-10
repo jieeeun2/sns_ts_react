@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { MdOutlineManageAccounts, MdOutlineLocationOn, MdOutlineWorkOutline } from 'react-icons/md'
-import { IconButton, FlexBetween, Hr, WidgetLayout } from 'styles/ReuseableComponent'
+import { IconButton, FlexBetween, Hr, WidgetLayout, Span } from 'styles/ReuseableComponent'
 
 const ProfileWidget = () => {
   return (
@@ -10,7 +10,7 @@ const ProfileWidget = () => {
           <img src='/images/profileImage.jpg' />
           <div>
             <h3>관리자</h3>
-            <span>친구수 N명</span>
+            <Span>친구수 N명</Span>
           </div>
         </UserInfoSection>
         <IconButton>
@@ -21,22 +21,22 @@ const ProfileWidget = () => {
       <UserInfoDetailBox>
         <div>
           <MdOutlineLocationOn className='icon' />
-          <span>서울, 대한민국</span>
+          <Span>서울, 대한민국</Span>
         </div>
         <div>
           <MdOutlineWorkOutline className='icon' />
-          <span>웹개발자</span>
+          <Span>웹개발자</Span>
         </div>
       </UserInfoDetailBox>
       <Hr />
       <VisitorInfoBox>
         <div>
-          <span>일간 방문자수</span>
-          <span className='bold'>N</span>
+          <Span>일간 방문자수</Span>
+          <Span className='bold'>N</Span>
         </div>
         <div>
-          <span>총 방문자수</span>
-          <span className='bold'>N</span>
+          <Span>총 방문자수</Span>
+          <Span className='bold'>N</Span>
         </div>
       </VisitorInfoBox>
     </ProfileWidgetLayout>
@@ -47,8 +47,7 @@ export default ProfileWidget
 
 const ProfileWidgetLayout = styled(WidgetLayout)`
   width: 250px;
-  margin: 28px;
-  color: ${({ theme }) => theme.neutral.dark};
+  box-sizing: border-box;
 
   & > div {
     margin: 12px;
@@ -56,34 +55,21 @@ const ProfileWidgetLayout = styled(WidgetLayout)`
 
   .icon {
     font-size: 24px;
-    color: ${({ theme }) => theme.neutral.dark};
-  }
-
-  span {
-    font-size: 14px;
-    font-weight: 500;
-    color: ${({ theme }) => theme.neutral.mediumMain};
-
-    &.bold {
-      font-weight: 700;
-    }
   }
 `
 
-const UserInfoBox = styled(FlexBetween)`
-  display: flex;
-
-  img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-  }
-`
+const UserInfoBox = styled(FlexBetween)``
 
 const UserInfoSection = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+
+  & > img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
 `
 
 const UserInfoDetailBox = styled.div`

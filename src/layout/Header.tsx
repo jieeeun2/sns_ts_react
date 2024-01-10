@@ -80,7 +80,6 @@ const HeaderLayout = styled(FlexBetween)`
   }
 
   .icon {
-    color: ${({ theme }) => theme.neutral.dark};
     font-size: 24px;
   }
 `
@@ -107,6 +106,11 @@ const SearchSection = styled(FlexBetween)`
   width: 240px;
   padding: 0 8px;
   gap: 4px;
+
+  & > button {
+    box-shadow: none;
+    border-radius: 50%;
+  }
 `
 
 const MenuBox = styled.div`
