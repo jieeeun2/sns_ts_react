@@ -47,7 +47,7 @@ const Header = () => {
         </LogoBox>
         <MenuBox>
           <Button onClick={changeMode}>
-            {mode === 'dark' ? <MdDarkMode className='icon' /> : <MdLightMode className='icon' />}
+            {mode === 'dark' ? <MdLightMode className='icon' /> : <MdDarkMode className='icon' />}
           </Button>
           <Button onClick={checkNotification}>
             <IoIosNotifications className='icon' />
