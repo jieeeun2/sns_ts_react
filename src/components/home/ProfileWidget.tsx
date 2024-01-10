@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { MdOutlineManageAccounts, MdOutlineLocationOn, MdOutlineWorkOutline } from 'react-icons/md'
-import { Button, FlexBetween, Hr, WidgetLayout } from 'styles/ReuseableComponent'
+import { IconButton, FlexBetween, Hr, WidgetLayout } from 'styles/ReuseableComponent'
 
 const ProfileWidget = () => {
   return (
@@ -13,9 +13,9 @@ const ProfileWidget = () => {
             <span>친구수 N명</span>
           </div>
         </UserInfoSection>
-        <Button>
+        <IconButton>
           <MdOutlineManageAccounts className='icon' />
-        </Button>
+        </IconButton>
       </UserInfoBox>
       <Hr />
       <UserInfoDetailBox>

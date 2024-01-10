@@ -15,11 +15,13 @@ export const Input = styled.input`
   width: 100%;
 `
 
-export const Button = styled.button`
+export const IconButton = styled.button`
   cursor: pointer;
   background: transparent;
   border: none;
 `
+
+export const Button = styled.button``
 
 export const WidgetLayout = styled.div`
   padding: 8px;

@@ -6,7 +6,7 @@ import { MdDarkMode, MdLightMode, MdMessage, MdHelp } from 'react-icons/md'
 import { IoIosNotifications } from 'react-icons/io'
 import { RootState } from 'store'
 import { setMode } from 'store/modeSlice'
-import { Input, Button, FlexBetween } from 'styles/ReuseableComponent'
+import { Input, IconButton, FlexBetween } from 'styles/ReuseableComponent'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
@@ -40,24 +40,24 @@ const Header = () => {
           </Link>
           <SearchSection>
             <Input onChange={changeSearchText} placeholder='search...' />
-            <Button onClick={search}>
+            <IconButton onClick={search}>
               <FiSearch className='icon' />
-            </Button>
+            </IconButton>
           </SearchSection>
         </LogoBox>
         <MenuBox>
-          <Button onClick={changeMode}>
+          <IconButton onClick={changeMode}>
             {mode === 'dark' ? <MdLightMode className='icon' /> : <MdDarkMode className='icon' />}
-          </Button>
-          <Button onClick={checkNotification}>
+          </IconButton>
+          <IconButton onClick={checkNotification}>
             <IoIosNotifications className='icon' />
-          </Button>
-          <Button onClick={checkMessage}>
+          </IconButton>
+          <IconButton onClick={checkMessage}>
             <MdMessage className='icon' />
-          </Button>
-          <Button onClick={checkHelp}>
+          </IconButton>
+          <IconButton onClick={checkHelp}>
             <MdHelp className='icon' />
-          </Button>
+          </IconButton>
         </MenuBox>
       </div>
     </HeaderLayout>
