@@ -1,3 +1,5 @@
+import { ChangeEvent, useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
   MdOutlineImage,
@@ -13,18 +15,40 @@ import {
   Textarea,
   WidgetLayout,
 } from 'styles/ReuseableComponent'
+import { PostInputValue } from 'types/postType'
+import UploadImage from 'components/common/UploadImage'
 
 const PostingWidget = () => {
+  const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
+  const [isImageEditable, setIsImageEditable] = useState<boolean>(false)
+
+  const changeInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const editImage = () => {
+    setIsImageEditable((prev) => !prev)
+  }
+
+  const changeImages = (newImages: File[]) => {
+    setInputValue((prev) => ({ ...prev, images: newImages }))
+  }
+
   return (
     <PostingWidgetLayout>
       <ContentBox>
         <img src='/images/profileImage.jpg' />
-        <Textarea placeholder='오늘 무슨일이 있었나요!' spellCheck='false' />
+        <Textarea
+          onChange={changeInputValue}
+          name='content'
+          placeholder='오늘 무슨일이 있었나요!'
+          spellCheck='false'
+        />
       </ContentBox>
       <Hr />
       <AttachmentAndSubmitBox>
         <AttachmentSection>
-          <IconButton>
+          <IconButton onClick={editImage}>
             <MdOutlineImage className='icon' />
             <span>이미지</span>
           </IconButton>
@@ -43,6 +67,7 @@ const PostingWidget = () => {
         </AttachmentSection>
         <Button>등록</Button>
       </AttachmentAndSubmitBox>
+      {isImageEditable && <UploadImage images={inputValue.images} changeImages={changeImages} />}
     </PostingWidgetLayout>
   )
 }
