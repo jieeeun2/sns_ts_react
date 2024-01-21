@@ -5,6 +5,7 @@ import { postApi } from 'apis/postApi'
 import { RootState } from 'store'
 import { setPosts } from 'store/postsSlice'
 import PostWidget from 'components/home/PostWidget'
+import NoContentWidget from 'components/home/NoContentWidget'
 
 const PostListWidget = () => {
   const dispatch = useDispatch()
@@ -22,12 +23,14 @@ const PostListWidget = () => {
 
   return (
     <PostListWidgetLayout>
-      {postList
-        .slice(0)
-        .reverse()
-        .map((post) => (
-          <PostWidget key={post.id} {...post} />
-        ))}
+      {postList.length > 0 ? (
+        postList
+          .slice(0)
+          .reverse()
+          .map((post) => <PostWidget key={post.id} {...post} />)
+      ) : (
+        <NoContentWidget />
+      )}
     </PostListWidgetLayout>
   )
 }
