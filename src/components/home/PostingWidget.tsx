@@ -16,11 +16,15 @@ import {
   WidgetLayout,
 } from 'styles/ReuseableComponent'
 import { PostInputValue } from 'types/postType'
+import { postApi } from 'apis/postApi'
+import { RootState } from 'store'
 import UploadImage from 'components/common/UploadImage'
 
 const PostingWidget = () => {
   const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
   const [isImageEditable, setIsImageEditable] = useState<boolean>(false)
+
+  const userInfo = useSelector((state: RootState) => state.user.user)
 
   const changeInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -32,6 +36,18 @@ const PostingWidget = () => {
 
   const changeImages = (newImages: File[]) => {
     setInputValue((prev) => ({ ...prev, images: newImages }))
+  }
+
+  const post = async () => {
+    if (!userInfo) return
+
+    const createPostResult = await postApi.createPost({
+      userId: userInfo.id,
+      content: inputValue.content,
+      images: inputValue.images,
+    })
+
+    console.log('createPostResult', createPostResult)
   }
 
   return (
@@ -65,7 +81,7 @@ const PostingWidget = () => {
             <span>음성녹음</span>
           </IconButton>
         </AttachmentSection>
-        <Button>등록</Button>
+        <Button onClick={post}>등록</Button>
       </AttachmentAndSubmitBox>
       {isImageEditable && <UploadImage images={inputValue.images} changeImages={changeImages} />}
     </PostingWidgetLayout>
