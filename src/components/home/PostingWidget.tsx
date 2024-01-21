@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
   MdOutlineImage,
@@ -19,12 +19,14 @@ import { PostInputValue } from 'types/postType'
 import { postApi } from 'apis/postApi'
 import { RootState } from 'store'
 import UploadImage from 'components/common/UploadImage'
+import { setPost } from 'store/postsSlice'
 
 const PostingWidget = () => {
   const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
   const [isImageEditable, setIsImageEditable] = useState<boolean>(false)
 
   const userInfo = useSelector((state: RootState) => state.user.user)
+  const dispatch = useDispatch()
 
   const changeInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -47,7 +49,7 @@ const PostingWidget = () => {
       images: inputValue.images,
     })
 
-    console.log('createPostResult', createPostResult)
+    dispatch(setPost({ post: createPostResult.data }))
   }
 
   return (
