@@ -24,7 +24,7 @@ const HomePage = () => {
 export default HomePage
 
 const HomePageLayout = styled.div`
-  height: calc(100dvh - 90px);
+  min-height: calc(100dvh - 90px);
   display: flex;
   gap: 24px;
   padding: 24px;
