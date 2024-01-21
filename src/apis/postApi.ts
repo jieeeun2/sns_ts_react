@@ -24,4 +24,15 @@ export const postApi = {
       console.log('err', err)
     }
   },
+
+  async getAllPostList() {
+    try {
+      const response = await axiosInstance('/post', {
+        method: 'GET',
+      })
+      return response.data
+    } catch (err) {
+      console.log('err', err)
+    }
+  },
 }
