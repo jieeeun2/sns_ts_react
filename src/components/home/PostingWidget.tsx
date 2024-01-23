@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
   MdOutlineImage,
@@ -16,17 +15,16 @@ import {
   WidgetLayout,
 } from 'styles/ReuseableComponent'
 import { PostInputValue } from 'types/postType'
-import { postApi } from 'apis/postApi'
-import { RootState } from 'store'
+import { useAppDispatch, useAppSelector } from 'store'
 import UploadImage from 'components/common/UploadImage'
-import { setPost } from 'store/postsSlice'
+import { addPost } from 'store/thunks/postThunks'
 
 const PostingWidget = () => {
   const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
   const [isImageEditable, setIsImageEditable] = useState<boolean>(false)
 
-  const userInfo = useSelector((state: RootState) => state.user.user)
-  const dispatch = useDispatch()
+  const userInfo = useAppSelector((state) => state.user.user)
+  const dispatch = useAppDispatch()
 
   const changeInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -43,13 +41,13 @@ const PostingWidget = () => {
   const post = async () => {
     if (!userInfo) return
 
-    const createPostResult = await postApi.createPost({
-      userId: userInfo.id,
-      content: inputValue.content,
-      images: inputValue.images,
-    })
-
-    dispatch(setPost({ post: createPostResult.data }))
+    dispatch(
+      addPost({
+        userId: userInfo.id,
+        content: inputValue.content,
+        images: inputValue.images,
+      }),
+    )
   }
 
   return (

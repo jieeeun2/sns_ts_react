@@ -1,11 +1,11 @@
-import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { authApi } from 'apis/authApi'
-import { setUser } from 'store/userSlice'
+import { setUser } from 'store/slices/userSlice'
 import { setAccessToken } from 'utils/localStorage'
+import { useAppDispatch } from 'store'
 
 const LoginPage = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const temporaryRegister = async () => {
     const mockData = {

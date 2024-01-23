@@ -1,20 +1,16 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { postApi } from 'apis/postApi'
-import { RootState } from 'store'
-import { setPosts } from 'store/postsSlice'
+import { useAppDispatch, useAppSelector } from 'store'
 import PostWidget from 'components/home/PostWidget'
 import NoContentWidget from 'components/home/NoContentWidget'
+import { getPosts } from 'store/thunks/postThunks'
 
 const PostListWidget = () => {
-  const dispatch = useDispatch()
-  const postList = useSelector((state: RootState) => state.posts.posts)
+  const dispatch = useAppDispatch()
+  const postList = useAppSelector((state) => state.posts.entities)
 
   const getAllPostList = async () => {
-    const getAllPostListResult = await postApi.getAllPostList()
-
-    dispatch(setPosts({ posts: getAllPostListResult.data }))
+    dispatch(getPosts())
   }
 
   useEffect(() => {

@@ -1,19 +1,18 @@
 import { useState, ChangeEvent } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { FiSearch } from 'react-icons/fi'
 import { MdDarkMode, MdLightMode, MdMessage, MdHelp } from 'react-icons/md'
 import { IoIosNotifications } from 'react-icons/io'
-import { RootState } from 'store'
-import { setMode } from 'store/modeSlice'
+import { useAppDispatch, useAppSelector } from 'store'
+import { setMode } from 'store/slices/modeSlice'
 import { Input, IconButton, FlexBetween } from 'styles/ReuseableComponent'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
   const [searchText, setSearchText] = useState<string>('')
 
-  const mode = useSelector((state: RootState) => state.mode.mode)
-  const dispatch = useDispatch()
+  const mode = useAppSelector((state) => state.mode.mode)
+  const dispatch = useAppDispatch()
 
   const changeSearchText = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value)
