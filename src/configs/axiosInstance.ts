@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios /* , { AxiosError }  */ from 'axios'
 
 export const axiosInstance = axios.create({
   baseURL: 'http://localhost:3001',
@@ -7,7 +7,7 @@ export const axiosInstance = axios.create({
   },
 })
 
-axiosInstance.interceptors.response.use(
+/* axiosInstance.interceptors.response.use(
   (response) => {
     const formattedMessage = `success ${response.data.message}`
 
@@ -43,3 +43,4 @@ axiosInstance.interceptors.response.use(
     }
   },
 )
+ */
