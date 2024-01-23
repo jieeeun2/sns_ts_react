@@ -1,15 +1,11 @@
 import { axiosInstance } from 'configs/axiosInstance'
-
-interface CreatePost {
-  userId: string
-  content: string
-  images: File[]
-}
+import { AddPost } from 'types/postApiType'
 
 export const postApi = {
-  async createPost({ userId, content, images }: CreatePost) {
+  async addPost({ userId, content, images }: AddPost) {
     try {
       const formData = new FormData()
+
       formData.append('userId', userId)
       formData.append('content', content)
       images.forEach((image) => formData.append('images', image))
@@ -19,20 +15,22 @@ export const postApi = {
         headers: { 'Content-Type': 'multipart/form-data' },
         data: formData,
       })
-      return response.data
-    } catch (err) {
-      console.log('err', err)
+
+      return response.data.data
+    } catch (error) {
+      console.log(error)
     }
   },
 
-  async getAllPostList() {
+  async getPosts() {
     try {
       const response = await axiosInstance('/post', {
         method: 'GET',
       })
-      return response.data
-    } catch (err) {
-      console.log('err', err)
+
+      return response.data.data
+    } catch (error) {
+      console.log(error)
     }
   },
 }
