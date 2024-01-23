@@ -10,9 +10,10 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import modeReducer from 'store/modeSlice'
-import userReducer from 'store/userSlice'
-import postsReducer from 'store/postsSlice'
+import modeReducer from 'store/slices/modeSlice'
+import userReducer from 'store/slices/userSlice'
+import postsReducer from 'store/slices/postsSlice'
+import { useAppDispatch, useAppSelector } from 'store/reduxHooks'
 
 const persistConfig = {
   key: 'root',
@@ -42,3 +43,5 @@ export const persistor = persistStore(store)
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
+export { useAppDispatch, useAppSelector }
