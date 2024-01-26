@@ -19,7 +19,7 @@ const PostListWidget = () => {
 
   return (
     <PostListWidgetLayout>
-      {postList.length > 0 ? (
+      {postList?.length > 0 ? (
         postList
           .slice(0)
           .reverse()
