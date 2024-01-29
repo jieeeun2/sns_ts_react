@@ -1,5 +1,5 @@
 import { axiosInstance } from 'configs/axiosInstance'
-import { AddPost } from 'types/postApiType'
+import { AddPost, GetPosts } from 'types/postApiType'
 
 export const postApi = {
   async addPost({ userId, content, images }: AddPost) {
@@ -22,10 +22,11 @@ export const postApi = {
     }
   },
 
-  async getPosts() {
+  async getPosts({ currentPage }: GetPosts) {
     try {
       const response = await axiosInstance('/post', {
         method: 'GET',
+        params: { currentPage },
       })
 
       return response.data.data

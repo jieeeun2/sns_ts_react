@@ -3,3 +3,7 @@ export interface AddPost {
   content: string
   images: File[]
 }
+
+export interface GetPosts {
+  currentPage: number
+}
