@@ -1,29 +1,31 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from 'store'
+import { getPosts } from 'store/thunks/postThunks'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import PostWidget from 'components/home/PostWidget'
 import NoContentWidget from 'components/home/NoContentWidget'
-import { getPosts } from 'store/thunks/postThunks'
 
 const PostListWidget = () => {
   const dispatch = useAppDispatch()
-  const postList = useAppSelector((state) => state.posts.entities)
-
-  const getAllPostList = async () => {
-    dispatch(getPosts())
-  }
+  const { entities: postList, hasNextPage } = useAppSelector((state) => state.posts)
 
   useEffect(() => {
-    getAllPostList()
+    if (postList.length === 0) dispatch(getPosts())
   }, [])
+
+  const { lastElementRef } = useInfiniteScroll<HTMLLIElement>(
+    () => hasNextPage && dispatch(getPosts()),
+  )
 
   return (
     <PostListWidgetLayout>
-      {postList?.length > 0 ? (
-        postList
-          .slice(0)
-          .reverse()
-          .map((post) => <PostWidget key={post.id} {...post} />)
+      {postList.length > 0 ? (
+        postList?.map((post, index) => (
+          <PostItemBox key={post.id} ref={index === postList.length - 1 ? lastElementRef : null}>
+            <PostWidget {...post} />
+          </PostItemBox>
+        ))
       ) : (
         <NoContentWidget />
       )}
@@ -33,9 +35,13 @@ const PostListWidget = () => {
 
 export default PostListWidget
 
-const PostListWidgetLayout = styled.div`
+const PostListWidgetLayout = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  list-style: none;
   margin-top: 20px;
+  padding: 0;
 `
+
+const PostItemBox = styled.li``
