@@ -24,7 +24,7 @@ const PostWidget: FC<Post> = ({
       <Profile />
       <ContentBox>
         <Textarea value={content} readOnly />
-        {imagePaths?.map((imagePath) => <img src={imagePath} />)}
+        {imagePaths?.map((imagePath, index) => <img key={index} src={imagePath} />)}
         <ReactionSection>
           <IconButton className='like'>
             <MdOutlineFavoriteBorder className='icon' />
