@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from 'store'
-import { getPosts } from 'store/thunks/postThunks'
+import { getPostsThunk } from 'store/thunks/postThunks'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import PostWidget from 'components/home/PostWidget'
 import NoContentWidget from 'components/home/NoContentWidget'
@@ -11,11 +11,11 @@ const PostListWidget = () => {
   const { entities: postList, hasNextPage } = useAppSelector((state) => state.posts)
 
   useEffect(() => {
-    if (postList.length === 0) dispatch(getPosts())
+    if (postList.length === 0) dispatch(getPostsThunk())
   }, [])
 
   const { lastElementRef } = useInfiniteScroll<HTMLLIElement>(
-    () => hasNextPage && dispatch(getPosts()),
+    () => hasNextPage && dispatch(getPostsThunk()),
   )
 
   return (

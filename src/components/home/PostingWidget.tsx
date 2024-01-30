@@ -17,7 +17,7 @@ import {
 import { PostInputValue } from 'types/postType'
 import { useAppDispatch, useAppSelector } from 'store'
 import UploadImage from 'components/common/UploadImage'
-import { addPost } from 'store/thunks/postThunks'
+import { addPostThunk } from 'store/thunks/postThunks'
 
 const PostingWidget = () => {
   const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
@@ -42,7 +42,7 @@ const PostingWidget = () => {
     if (!userInfo) return
 
     dispatch(
-      addPost({
+      addPostThunk({
         userId: userInfo.id,
         content: inputValue.content,
         images: inputValue.images,

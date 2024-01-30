@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addPost, getPosts } from 'store/thunks/postThunks'
+import { addPostThunk, getPostsThunk } from 'store/thunks/postThunks'
 import { Post } from 'types/postType'
 
 interface PostsState {
@@ -24,30 +24,30 @@ export const postsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addPost.pending, (state) => {
+      .addCase(addPostThunk.pending, (state) => {
         if (state.loading === 'idle') {
           state.loading = 'pending'
         }
       })
-      .addCase(addPost.fulfilled, (state, action) => {
+      .addCase(addPostThunk.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.entities = [action.payload, ...state.entities]
         }
       })
-      .addCase(addPost.rejected, (state, action) => {
+      .addCase(addPostThunk.rejected, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.error = action.error as string
         }
       })
 
-      .addCase(getPosts.pending, (state) => {
+      .addCase(getPostsThunk.pending, (state) => {
         if (state.loading === 'idle') {
           state.loading = 'pending'
         }
       })
-      .addCase(getPosts.fulfilled, (state, action) => {
+      .addCase(getPostsThunk.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.entities = [...state.entities, ...action.payload.posts]
@@ -55,7 +55,7 @@ export const postsSlice = createSlice({
           state.currentPage += 1
         }
       })
-      .addCase(getPosts.rejected, (state, action) => {
+      .addCase(getPostsThunk.rejected, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.error = action.error as string
