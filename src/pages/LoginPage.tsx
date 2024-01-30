@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { authApi } from 'apis/authApi'
+import { register, login } from 'apis/authApi'
 import { setUser } from 'store/slices/userSlice'
 import { setAccessToken } from 'utils/localStorage'
 import { useAppDispatch } from 'store'
@@ -16,7 +16,7 @@ const LoginPage = () => {
       location: '',
       occupation: '',
     }
-    const registerResult = await authApi.register(mockData)
+    const registerResult = await register(mockData)
     console.log('registerResult', registerResult)
   }
 
@@ -27,7 +27,7 @@ const LoginPage = () => {
       password: 'test2',
       isAutoLogin,
     }
-    const loginResult = await authApi.login(mockData)
+    const loginResult = await login(mockData)
     const { accessToken, user } = loginResult.data
 
     if (!isAutoLogin) setAccessToken(accessToken)
