@@ -7,3 +7,7 @@ export interface AddPost {
 export interface GetPosts {
   currentPage: number
 }
+
+export interface DeletePost {
+  postId: string
+}
