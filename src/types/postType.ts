@@ -3,6 +3,12 @@ export interface PostInputValue {
   images: File[]
 }
 
+export interface UpdatePostInputValue {
+  content: string
+  images: File[]
+  imagePaths: string[]
+}
+
 export interface Post {
   id: string
   userId: string
