@@ -5,6 +5,8 @@ import { AiOutlineExport } from 'react-icons/ai'
 import { Button, IconButton, Textarea, WidgetLayout } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
 import { Post, UpdatePostInputValue } from 'types/postType'
+import { useAppDispatch } from 'store'
+import { deletePostThunk } from 'store/thunks/postThunks'
 
 const PostWidget: FC<Post> = ({
   id,
@@ -26,6 +28,8 @@ const PostWidget: FC<Post> = ({
     imagePaths,
   })
 
+  const dispatch = useAppDispatch()
+
   const changeUpdateMode = () => {
     setIsUpdateMode(true)
   }
@@ -41,7 +45,9 @@ const PostWidget: FC<Post> = ({
     setInputValue({ content, images: [], imagePaths })
   }
 
-  const deletePost = () => {}
+  const deletePost = () => {
+    dispatch(deletePostThunk({ postId: id }))
+  }
 
   return (
     <PostWidgetLayout>

@@ -70,7 +70,7 @@ export const postsSlice = createSlice({
       .addCase(deletePostThunk.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
-          state.entities = state.entities.filter((entity) => entity.id !== action.payload.id)
+          state.entities = state.entities.filter((entity) => entity.id !== action.payload.postId)
         }
       })
       .addCase(deletePostThunk.rejected, (state, action) => {

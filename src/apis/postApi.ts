@@ -36,9 +36,8 @@ export const getPosts = async ({ currentPage }: GetPosts) => {
 
 export const deletePost = async ({ postId }: DeletePost) => {
   try {
-    const response = await axiosInstance('/post', {
+    const response = await axiosInstance(`/post/${postId}`, {
       method: 'DELETE',
-      params: { postId },
     })
 
     return response.data.data
