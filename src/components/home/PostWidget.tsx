@@ -8,7 +8,7 @@ import UploadImage from 'components/common/UploadImage'
 import DynamicHeightTextarea from 'components/common/DynamicHeightTextarea'
 import { Post, UpdatePostInputValue } from 'types/postType'
 import { useAppDispatch } from 'store'
-import { deletePostThunk } from 'store/thunks/postThunks'
+import { deletePostThunk, updatePostThunk } from 'store/thunks/postThunks'
 
 const PostWidget: FC<Post> = ({
   id,
@@ -44,7 +44,13 @@ const PostWidget: FC<Post> = ({
     setInputValue((prev) => ({ ...prev, images: newImages, imagePaths: newImagePaths }))
   }
 
-  const updatePost = () => {}
+  const updatePost = () => {
+    const { content, images, imagePaths } = inputValue
+
+    dispatch(updatePostThunk({ postId: id, content, images, imagePaths })).then(() =>
+      setIsUpdateMode(false),
+    )
+  }
 
   const cancel = () => {
     setIsUpdateMode(false)
