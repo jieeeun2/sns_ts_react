@@ -2,22 +2,30 @@ import { FC } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 
-export interface CustomFile extends File {
-  preview: string
-}
 interface UploadImageProps {
+  isUpdateMode?: boolean
   images: File[]
-  changeImages: (newImages: File[]) => void
+  imagePaths?: string[] //post등록에서는 필요없고 post수정시에만 필요한 속성
+  changeImages: (newImages: File[], newImagePaths: string[]) => void
 }
-const UploadImage: FC<UploadImageProps> = ({ images, changeImages }) => {
+
+const UploadImage: FC<UploadImageProps> = ({
+  isUpdateMode = false,
+  images,
+  imagePaths = [],
+  changeImages,
+}) => {
   const addImage = (acceptedFiles: File[]) => {
-    changeImages([...images, ...acceptedFiles])
+    changeImages([...images, ...acceptedFiles], imagePaths)
   }
 
-  const deleteImage = (index: number) => {
+  const deleteImage = (kind: 'image' | 'imagePath', index: number) => {
     const newImages = [...images]
-    newImages.splice(index, 1)
-    changeImages(newImages)
+    const newImagePaths = [...imagePaths]
+
+    kind === 'image' ? newImages.splice(index, 1) : newImagePaths.splice(index, 1)
+
+    changeImages(newImages, newImagePaths)
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: addImage })
@@ -31,10 +39,16 @@ const UploadImage: FC<UploadImageProps> = ({ images, changeImages }) => {
       <PreviewBox>
         <PreviewListSection>
           {images?.map((image, index) => (
-            <PreivewSection key={index} onClick={() => deleteImage(index)}>
+            <PreivewSection key={index} onClick={() => deleteImage('image', index)}>
               <img src={URL.createObjectURL(image)} />
             </PreivewSection>
           ))}
+          {isUpdateMode &&
+            imagePaths?.map((imagePath, index) => (
+              <PreivewSection key={index} onClick={() => deleteImage('imagePath', index)}>
+                <img src={imagePath} />
+              </PreivewSection>
+            ))}
         </PreviewListSection>
         {images.length > 0 && <p className='info_delete'>삭제하시려면 이미지를 클릭해주세요.</p>}
       </PreviewBox>

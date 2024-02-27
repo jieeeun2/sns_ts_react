@@ -4,6 +4,7 @@ import { MdOutlineFavoriteBorder, MdOutlineChatBubbleOutline } from 'react-icons
 import { AiOutlineExport } from 'react-icons/ai'
 import { Button, IconButton, Textarea, WidgetLayout } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
+import UploadImage from 'components/common/UploadImage'
 import { Post, UpdatePostInputValue } from 'types/postType'
 import { useAppDispatch } from 'store'
 import { deletePostThunk } from 'store/thunks/postThunks'
@@ -36,6 +37,10 @@ const PostWidget: FC<Post> = ({
 
   const changeInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const changeImages = (newImages: File[], newImagePaths: string[]) => {
+    setInputValue((prev) => ({ ...prev, images: newImages, imagePaths: newImagePaths }))
   }
 
   const updatePost = () => {}
@@ -74,7 +79,18 @@ const PostWidget: FC<Post> = ({
             readOnly={!isUpdateMode}
             spellCheck='false'
           />
-          {imagePaths?.map((imagePath, index) => <img key={index} src={imagePath} />)}
+          <>
+            {!isUpdateMode ? (
+              <>{imagePaths?.map((imagePath, index) => <img key={index} src={imagePath} />)}</>
+            ) : (
+              <UploadImage
+                isUpdateMode={isUpdateMode}
+                images={inputValue.images}
+                imagePaths={inputValue.imagePaths}
+                changeImages={changeImages}
+              />
+            )}
+          </>
         </ContentSection>
         <ReactionSection>
           <IconButton className='like'>
@@ -110,7 +126,11 @@ const PostWidgetLayout = styled(WidgetLayout)`
   }
 `
 
-const ContentBox = styled.div``
+const ContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`
 
 const UpdateAndDeleteSection = styled.div`
   position: absolute;
@@ -127,10 +147,9 @@ const UpdateAndDeleteSection = styled.div`
 `
 
 const ContentSection = styled.div`
-  textarea {
-    width: 100%;
-    box-sizing: border-box;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
   textarea[readOnly] {
     background: transparent;
