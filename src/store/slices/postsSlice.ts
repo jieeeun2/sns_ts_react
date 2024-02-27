@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addPostThunk, getPostsThunk, deletePostThunk } from 'store/thunks/postThunks'
+import {
+  addPostThunk,
+  getPostsThunk,
+  deletePostThunk,
+  updatePostThunk,
+} from 'store/thunks/postThunks'
 import { Post } from 'types/postType'
 
 interface PostsState {
@@ -74,6 +79,26 @@ export const postsSlice = createSlice({
         }
       })
       .addCase(deletePostThunk.rejected, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.error = action.error as string
+        }
+      })
+
+      .addCase(updatePostThunk.pending, (state) => {
+        if (state.loading === 'idle') {
+          state.loading = 'pending'
+        }
+      })
+      .addCase(updatePostThunk.fulfilled, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.entities = state.entities.map((entity) =>
+            entity.id === action.payload.post.id ? action.payload.post : entity,
+          )
+        }
+      })
+      .addCase(updatePostThunk.rejected, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.error = action.error as string

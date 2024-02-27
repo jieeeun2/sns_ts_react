@@ -1,5 +1,5 @@
 import { axiosInstance } from 'configs/axiosInstance'
-import { AddPost, DeletePost, GetPosts } from 'types/postApiType'
+import { AddPost, DeletePost, GetPosts, UpdatePost } from 'types/postApiType'
 
 export const addPost = async ({ userId, content, images }: AddPost) => {
   try {
@@ -38,6 +38,26 @@ export const deletePost = async ({ postId }: DeletePost) => {
   try {
     const response = await axiosInstance(`/post/${postId}`, {
       method: 'DELETE',
+    })
+
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const updatePost = async ({ postId, content, images, imagePaths }: UpdatePost) => {
+  try {
+    const formData = new FormData()
+
+    formData.append('content', content)
+    images.forEach((image) => formData.append('images', image))
+    imagePaths.forEach((imagePath) => formData.append('imagePaths', imagePath))
+
+    const response = await axiosInstance(`/post/${postId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'multipart/form-data' },
+      data: formData,
     })
 
     return response.data.data

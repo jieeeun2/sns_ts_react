@@ -11,3 +11,10 @@ export interface GetPosts {
 export interface DeletePost {
   postId: string
 }
+
+export interface UpdatePost {
+  postId: string
+  content: string
+  images: File[]
+  imagePaths: string[]
+}
