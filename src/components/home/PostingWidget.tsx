@@ -6,18 +6,12 @@ import {
   MdOutlineAttachFile,
   MdOutlineMicNone,
 } from 'react-icons/md'
-import {
-  Button,
-  FlexBetween,
-  Hr,
-  IconButton,
-  Textarea,
-  WidgetLayout,
-} from 'styles/ReuseableComponent'
+import { Button, FlexBetween, Hr, IconButton, WidgetLayout } from 'styles/ReuseableComponent'
 import { PostInputValue } from 'types/postType'
 import { useAppDispatch, useAppSelector } from 'store'
-import UploadImage from 'components/common/UploadImage'
 import { addPostThunk } from 'store/thunks/postThunks'
+import UploadImage from 'components/common/UploadImage'
+import DynamicHeightTextarea from 'components/common/DynamicHeightTextarea'
 
 const PostingWidget = () => {
   const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
@@ -26,8 +20,8 @@ const PostingWidget = () => {
   const userInfo = useAppSelector((state) => state.user.user)
   const dispatch = useAppDispatch()
 
-  const changeInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  const changeContent = (newContent: string) => {
+    setInputValue((prev) => ({ ...prev, content: newContent }))
   }
 
   const editImage = () => {
@@ -54,11 +48,10 @@ const PostingWidget = () => {
     <PostingWidgetLayout>
       <ContentBox>
         <img src='/images/profileImage.jpg' />
-        <Textarea
-          onChange={changeInputValue}
-          name='content'
+        <DynamicHeightTextarea
+          text={inputValue.content}
+          changeText={changeContent}
           placeholder='오늘 무슨일이 있었나요!'
-          spellCheck='false'
         />
       </ContentBox>
       <Hr />

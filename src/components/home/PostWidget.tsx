@@ -1,10 +1,11 @@
-import { FC, useState, ChangeEvent } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { MdOutlineFavoriteBorder, MdOutlineChatBubbleOutline } from 'react-icons/md'
 import { AiOutlineExport } from 'react-icons/ai'
-import { Button, IconButton, Textarea, WidgetLayout } from 'styles/ReuseableComponent'
+import { Button, IconButton, WidgetLayout } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
 import UploadImage from 'components/common/UploadImage'
+import DynamicHeightTextarea from 'components/common/DynamicHeightTextarea'
 import { Post, UpdatePostInputValue } from 'types/postType'
 import { useAppDispatch } from 'store'
 import { deletePostThunk } from 'store/thunks/postThunks'
@@ -35,8 +36,8 @@ const PostWidget: FC<Post> = ({
     setIsUpdateMode(true)
   }
 
-  const changeInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  const changeContent = (newContent: string) => {
+    setInputValue((prev) => ({ ...prev, content: newContent }))
   }
 
   const changeImages = (newImages: File[], newImagePaths: string[]) => {
@@ -72,12 +73,10 @@ const PostWidget: FC<Post> = ({
           )}
         </UpdateAndDeleteSection>
         <ContentSection>
-          <Textarea
-            name='content'
-            value={inputValue.content}
-            onChange={changeInputValue}
+          <DynamicHeightTextarea
+            text={inputValue.content}
+            changeText={changeContent}
             readOnly={!isUpdateMode}
-            spellCheck='false'
           />
           <>
             {!isUpdateMode ? (

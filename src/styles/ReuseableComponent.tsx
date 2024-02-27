@@ -18,18 +18,6 @@ export const Input = styled.input`
   padding: 0 12px;
 `
 
-export const Textarea = styled.textarea`
-  border: none;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.neutral.light};
-  color: ${({ theme }) => theme.neutral.dark};
-  outline: none;
-  width: 100%;
-  height: 80px;
-  padding: 12px;
-  resize: none;
-`
-
 export const Button = styled.button`
   cursor: pointer;
   background: ${({ theme }) => theme.neutral.light};
