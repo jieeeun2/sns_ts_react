@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MdOutlineFavoriteBorder, MdOutlineChatBubbleOutline } from 'react-icons/md'
 import { AiOutlineExport } from 'react-icons/ai'
@@ -26,9 +26,21 @@ const PostWidget: FC<Post> = ({
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<UpdatePostInputValue>({
     content,
-    images: [],
-    imagePaths,
+    imagesToAdd: [],
+    existingImagePaths: imagePaths,
+    imagePathsToDelete: [],
   })
+
+  useEffect(() => {
+    if (!isUpdateMode) return
+
+    setInputValue({
+      content,
+      imagesToAdd: [],
+      existingImagePaths: imagePaths,
+      imagePathsToDelete: [],
+    })
+  }, [isUpdateMode, content, imagePaths])
 
   const dispatch = useAppDispatch()
 
@@ -40,21 +52,33 @@ const PostWidget: FC<Post> = ({
     setInputValue((prev) => ({ ...prev, content: newContent }))
   }
 
-  const changeImages = (newImages: File[], newImagePaths: string[]) => {
-    setInputValue((prev) => ({ ...prev, images: newImages, imagePaths: newImagePaths }))
+  const changeImages = ({
+    newImages,
+    newExistingImagePaths,
+    newImagePathsToDelete,
+  }: {
+    newImages?: File[]
+    newExistingImagePaths?: string[]
+    newImagePathsToDelete?: string[]
+  }) => {
+    setInputValue((prev) => ({
+      ...prev,
+      imagesToAdd: newImages || prev.imagesToAdd,
+      existingImagePaths: newExistingImagePaths || prev.existingImagePaths,
+      imagePathsToDelete: newImagePathsToDelete || prev.imagePathsToDelete,
+    }))
   }
 
   const updatePost = () => {
-    const { content, images, imagePaths } = inputValue
+    const { content, imagesToAdd, imagePathsToDelete } = inputValue
 
-    dispatch(updatePostThunk({ postId: id, content, images, imagePaths })).then(() =>
+    dispatch(updatePostThunk({ postId: id, content, imagesToAdd, imagePathsToDelete })).then(() =>
       setIsUpdateMode(false),
     )
   }
 
   const cancel = () => {
     setIsUpdateMode(false)
-    setInputValue({ content, images: [], imagePaths })
   }
 
   const deletePost = () => {
@@ -90,8 +114,9 @@ const PostWidget: FC<Post> = ({
             ) : (
               <UploadImage
                 isUpdateMode={isUpdateMode}
-                images={inputValue.images}
-                imagePaths={inputValue.imagePaths}
+                images={inputValue.imagesToAdd}
+                existingImagePaths={inputValue.existingImagePaths}
+                imagePathsToDelete={inputValue.imagePathsToDelete}
                 changeImages={changeImages}
               />
             )}

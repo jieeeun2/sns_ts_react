@@ -15,6 +15,6 @@ export interface DeletePost {
 export interface UpdatePost {
   postId: string
   content: string
-  images: File[]
-  imagePaths: string[]
+  imagesToAdd: File[]
+  imagePathsToDelete: string[]
 }

@@ -28,7 +28,7 @@ const PostingWidget = () => {
     setIsImageEditable((prev) => !prev)
   }
 
-  const changeImages = (newImages: File[]) => {
+  const changeImages = ({ newImages = [] }: { newImages?: File[] }) => {
     setInputValue((prev) => ({ ...prev, images: newImages }))
   }
 
@@ -42,6 +42,7 @@ const PostingWidget = () => {
         images: inputValue.images,
       }),
     )
+    setInputValue({ content: '', images: [] })
   }
 
   return (

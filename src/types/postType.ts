@@ -5,8 +5,9 @@ export interface PostInputValue {
 
 export interface UpdatePostInputValue {
   content: string
-  images: File[]
-  imagePaths: string[]
+  imagesToAdd: File[]
+  existingImagePaths: string[]
+  imagePathsToDelete: string[]
 }
 
 export interface Post {

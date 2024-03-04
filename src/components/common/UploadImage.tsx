@@ -2,30 +2,65 @@ import { FC } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 
+/** UploadImage 컴포넌트
+ * 이미지 업로드, 미리보기, 삭제 담당
+ *
+ * 게시글 수정모드일때 새 이미지 업로드 가능하고 기존이미지에도 미리보기와 삭제 가능
+ * 상태값은 항상 부모컴포넌트에서 가지고있는데, Single Source of Truth 준수로 데이터 일관성과 관리 용이
+ *
+ * isUpdateMode: 게시물 수정모드 여부
+ * images: 업로드한 새 이미지들
+ * existingImagePaths: (게시글 수정시에만 사용) 서버에 올라가있는 이미지 경로들
+ * imagePathsToDelete: (게시글 수정시에만 사용) 서버에서 삭제할 이미지 경로들
+ * changeImages: 부모컴포넌트에 있는 상태값 업데이트 함수
+ */
+
+/* export type ImageData = 
+  { newImages: File[] } | { newExistingImagePaths: string[], newImagePathsToDelete: string[] } */
+
 interface UploadImageProps {
   isUpdateMode?: boolean
   images: File[]
-  imagePaths?: string[] //post등록에서는 필요없고 post수정시에만 필요한 속성
-  changeImages: (newImages: File[], newImagePaths: string[]) => void
+  existingImagePaths?: string[]
+  imagePathsToDelete?: string[]
+  changeImages: ({
+    newImages,
+    newExistingImagePaths,
+    newImagePathsToDelete,
+  }: {
+    newImages?: File[]
+    newExistingImagePaths?: string[]
+    newImagePathsToDelete?: string[]
+  }) => void
+  // changeImages: (data: ImageData) => void
 }
 
 const UploadImage: FC<UploadImageProps> = ({
   isUpdateMode = false,
   images,
-  imagePaths = [],
+  existingImagePaths = [],
+  imagePathsToDelete = [],
   changeImages,
 }) => {
   const addImage = (acceptedFiles: File[]) => {
-    changeImages([...images, ...acceptedFiles], imagePaths)
+    changeImages({ newImages: [...images, ...acceptedFiles] })
   }
 
   const deleteImage = (kind: 'image' | 'imagePath', index: number) => {
-    const newImages = [...images]
-    const newImagePaths = [...imagePaths]
+    if (kind === 'image') {
+      const newImages = [...images]
+      newImages.splice(index, 1)
 
-    kind === 'image' ? newImages.splice(index, 1) : newImagePaths.splice(index, 1)
+      changeImages({ newImages })
+    } else {
+      const newExistingImagePaths = [...existingImagePaths]
+      newExistingImagePaths.splice(index, 1)
 
-    changeImages(newImages, newImagePaths)
+      const newImagePathsToDelete = [...imagePathsToDelete]
+      newImagePathsToDelete.push(existingImagePaths[index])
+
+      changeImages({ newExistingImagePaths, newImagePathsToDelete })
+    }
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: addImage })
@@ -44,7 +79,7 @@ const UploadImage: FC<UploadImageProps> = ({
             </PreivewSection>
           ))}
           {isUpdateMode &&
-            imagePaths?.map((imagePath, index) => (
+            existingImagePaths?.map((imagePath, index) => (
               <PreivewSection key={index} onClick={() => deleteImage('imagePath', index)}>
                 <img src={imagePath} />
               </PreivewSection>

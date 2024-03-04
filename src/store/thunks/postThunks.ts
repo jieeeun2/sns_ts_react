@@ -42,9 +42,9 @@ export const deletePostThunk = createAsyncThunk(
 
 export const updatePostThunk = createAsyncThunk(
   'posts/updatePost',
-  async ({ postId, content, images, imagePaths }: UpdatePost) => {
+  async ({ postId, content, imagesToAdd, imagePathsToDelete }: UpdatePost) => {
     try {
-      const response = await updatePost({ postId, content, images, imagePaths })
+      const response = await updatePost({ postId, content, imagesToAdd, imagePathsToDelete })
 
       return response
     } catch (error) {

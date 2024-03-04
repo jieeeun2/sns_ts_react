@@ -46,13 +46,20 @@ export const deletePost = async ({ postId }: DeletePost) => {
   }
 }
 
-export const updatePost = async ({ postId, content, images, imagePaths }: UpdatePost) => {
+export const updatePost = async ({
+  postId,
+  content,
+  imagesToAdd,
+  imagePathsToDelete,
+}: UpdatePost) => {
   try {
     const formData = new FormData()
 
     formData.append('content', content)
-    images.forEach((image) => formData.append('images', image))
-    imagePaths.forEach((imagePath) => formData.append('imagePaths', imagePath))
+    imagesToAdd.forEach((image) => formData.append('images', image))
+    imagePathsToDelete.forEach((imagePath, index) =>
+      formData.append(`imagePaths[${index}]`, imagePath),
+    )
 
     const response = await axiosInstance(`/post/${postId}`, {
       method: 'PATCH',
