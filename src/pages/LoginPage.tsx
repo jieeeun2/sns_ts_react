@@ -8,13 +8,22 @@ const LoginPage = () => {
   const dispatch = useAppDispatch()
 
   const temporaryRegister = async () => {
+    const response = await fetch('images/nasa-hubble-space-telescope-zhCVbS0raD8-unsplash.jpg')
+    const imageBlob = await response.blob()
+
+    const profileImage = new File(
+      [imageBlob],
+      'nasa-hubble-space-telescope-zhCVbS0raD8-unsplash.jpg',
+      { type: 'image/jpeg' },
+    )
+
     const mockData = {
-      name: 'test2',
-      email: 'test2@sociopedia.com',
-      password: 'test2',
-      profileImage: new File(['dummy content'], 'dummy_filename.jpg', { type: 'image/jpeg' }),
-      location: '',
-      occupation: '',
+      name: '관리자',
+      email: 'manager@sociopedia.com',
+      password: 'manager',
+      profileImage,
+      location: '서울, 대한민국',
+      occupation: '웹개발자',
     }
     const registerResult = await register(mockData)
     console.log('registerResult', registerResult)
@@ -23,8 +32,8 @@ const LoginPage = () => {
   const temporaryLogin = async () => {
     const isAutoLogin = false
     const mockData = {
-      email: 'test2@sociopedia.com',
-      password: 'test2',
+      email: 'manager@sociopedia.com',
+      password: 'manager',
       isAutoLogin,
     }
     const loginResult = await login(mockData)
