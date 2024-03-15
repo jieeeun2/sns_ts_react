@@ -25,7 +25,16 @@ const SearchResultList: FC<SearchResultListProps> = ({ isDropdownOpen, setIsDrop
           {users.length > 0 || posts.length > 0 ? (
             <CategoryBox>
               <Span className='bold'>사용자</Span>
-              <ResultByCategorySection className='users'>Profile호출</ResultByCategorySection>
+              <ResultByCategorySection className='users'>
+                {users.map(({ profileImagePath, name, location }, index) => (
+                  <Profile
+                    key={index}
+                    profileImagePath={profileImagePath}
+                    name={name}
+                    location={location}
+                  />
+                ))}
+              </ResultByCategorySection>
             </CategoryBox>
           ) : (
             <NoContentWidget />

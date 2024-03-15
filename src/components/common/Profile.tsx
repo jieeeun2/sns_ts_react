@@ -1,17 +1,30 @@
 import { FC } from 'react'
 import styled from 'styled-components'
+import { WidgetLayout } from 'styles/ReuseableComponent'
 
 interface ProfileProps {
   isProfileWidget?: boolean
+  profileImagePath: string
+  name: string
+  numberOfFriends?: number
+  location?: string
 }
 
-const Profile: FC<ProfileProps> = ({ isProfileWidget = false }) => {
+const Profile: FC<ProfileProps> = ({
+  isProfileWidget = false,
+  profileImagePath,
+  name,
+  numberOfFriends,
+  location,
+}) => {
   return (
     <ProfileLayout $isProfileWidget={isProfileWidget}>
-      <img src='/images/profileImage.jpg' />
+      <img src={profileImagePath} />
       <div>
-        <span className='user_name'>관리자</span>
-        <span className='user_info'>{isProfileWidget ? '친구수 N명' : '서울, 대한민국'}</span>
+        <span className='user_name'>{name}</span>
+        <span className='user_info'>
+          {isProfileWidget ? `친구수 ${numberOfFriends}명` : `${location}`}
+        </span>
       </div>
     </ProfileLayout>
   )
@@ -19,10 +32,11 @@ const Profile: FC<ProfileProps> = ({ isProfileWidget = false }) => {
 
 export default Profile
 
-const ProfileLayout = styled.div<{ $isProfileWidget: boolean }>`
+const ProfileLayout = styled(WidgetLayout)<{ $isProfileWidget: boolean }>`
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: ${({ $isProfileWidget }) => $isProfileWidget && '0px'};
 
   & > img {
     width: ${({ $isProfileWidget }) => ($isProfileWidget ? '70px' : '50px')};

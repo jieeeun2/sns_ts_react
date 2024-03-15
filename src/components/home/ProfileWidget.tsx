@@ -1,13 +1,40 @@
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { MdOutlineManageAccounts, MdOutlineLocationOn, MdOutlineWorkOutline } from 'react-icons/md'
 import { IconButton, FlexBetween, Hr, WidgetLayout, Span } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
+import { useAppSelector } from 'store'
 
 const ProfileWidget = () => {
+  const { entity } = useAppSelector((state) => state.user)
+  const navigate = useNavigate()
+
+  if (!entity) navigate('/login')
+
+  const {
+    id,
+    name,
+    email,
+    profileImagePath,
+    friends,
+    location,
+    occupation,
+    numberOfVisitorsToday,
+    totalNumberOfVisitors,
+  } = entity!
+
+  const profileComponentProps = {
+    isProfileWidget: true,
+    profileImagePath,
+    name,
+    numberOfFriends: friends?.length || 0,
+    location,
+  }
+
   return (
     <ProfileWidgetLayout>
       <UserInfoBox>
-        <Profile isProfileWidget={true} />
+        <Profile {...profileComponentProps} />
         <IconButton>
           <MdOutlineManageAccounts className='icon' />
         </IconButton>
@@ -16,22 +43,22 @@ const ProfileWidget = () => {
       <UserInfoDetailBox>
         <div>
           <MdOutlineLocationOn className='icon' />
-          <Span>서울, 대한민국</Span>
+          <Span>{location}</Span>
         </div>
         <div>
           <MdOutlineWorkOutline className='icon' />
-          <Span>웹개발자</Span>
+          <Span>{occupation}</Span>
         </div>
       </UserInfoDetailBox>
       <Hr />
       <VisitorInfoBox>
         <div>
           <Span>일간 방문자수</Span>
-          <Span className='bold'>N</Span>
+          <Span className='bold'>{numberOfVisitorsToday}</Span>
         </div>
         <div>
           <Span>총 방문자수</Span>
-          <Span className='bold'>N</Span>
+          <Span className='bold'>{totalNumberOfVisitors}</Span>
         </div>
       </VisitorInfoBox>
     </ProfileWidgetLayout>
