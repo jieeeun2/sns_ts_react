@@ -14,8 +14,7 @@ export const Input = styled.input`
   color: ${({ theme }) => theme.neutral.dark};
   outline: none;
   width: 100%;
-  min-height: 40px;
-  padding: 0 12px;
+  font-size: 16px;
 `
 
 export const Button = styled.button`
