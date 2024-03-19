@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from 'store'
-import { addPost, deletePost, getPosts, updatePost } from 'apis/postApi'
+import { addPost, deletePost, getPosts, getUserPosts, updatePost } from 'apis/postApi'
 import { AddPost, DeletePost, UpdatePost } from 'types/postApiType'
 
 export const addPostThunk = createAsyncThunk(
@@ -26,6 +26,21 @@ export const getPostsThunk = createAsyncThunk('posts/getPosts', async (_, { getS
     console.log(error)
   }
 })
+
+export const getUserPostsThunk = createAsyncThunk(
+  'posts/getUserPosts',
+  async ({ userId }: { userId: string }, { getState }) => {
+    try {
+      const { posts } = getState() as RootState
+      const currentPage = posts.currentPage
+      const response = await getUserPosts({ userId, currentPage })
+
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  },
+)
 
 export const deletePostThunk = createAsyncThunk(
   'posts/deletePost',

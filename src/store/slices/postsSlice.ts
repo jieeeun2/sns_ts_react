@@ -4,6 +4,7 @@ import {
   getPostsThunk,
   deletePostThunk,
   updatePostThunk,
+  getUserPostsThunk,
 } from 'store/thunks/postThunks'
 import { Post } from 'types/postType'
 
@@ -61,6 +62,26 @@ export const postsSlice = createSlice({
         }
       })
       .addCase(getPostsThunk.rejected, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.error = action.error as string
+        }
+      })
+
+      .addCase(getUserPostsThunk.pending, (state) => {
+        if (state.loading === 'idle') {
+          state.loading = 'pending'
+        }
+      })
+      .addCase(getUserPostsThunk.fulfilled, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.entities = [...state.entities, ...action.payload.posts]
+          state.hasNextPage = action.payload.hasNextPage
+          state.currentPage += 1
+        }
+      })
+      .addCase(getUserPostsThunk.rejected, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.error = action.error as string

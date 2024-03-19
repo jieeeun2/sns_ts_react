@@ -8,6 +8,11 @@ export interface GetPosts {
   currentPage: number
 }
 
+export interface GetUserPosts {
+  userId: string
+  currentPage: number
+}
+
 export interface DeletePost {
   postId: string
 }

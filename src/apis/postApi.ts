@@ -1,5 +1,5 @@
 import { axiosInstance } from 'configs/axiosInstance'
-import { AddPost, DeletePost, GetPosts, UpdatePost } from 'types/postApiType'
+import { AddPost, DeletePost, GetPosts, GetUserPosts, UpdatePost } from 'types/postApiType'
 
 export const addPost = async ({ userId, content, images }: AddPost) => {
   try {
@@ -24,6 +24,19 @@ export const addPost = async ({ userId, content, images }: AddPost) => {
 export const getPosts = async ({ currentPage }: GetPosts) => {
   try {
     const response = await axiosInstance('/post', {
+      method: 'GET',
+      params: { currentPage },
+    })
+
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getUserPosts = async ({ userId, currentPage }: GetUserPosts) => {
+  try {
+    const response = await axiosInstance(`/post/${userId}`, {
       method: 'GET',
       params: { currentPage },
     })
