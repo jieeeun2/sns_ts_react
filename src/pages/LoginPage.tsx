@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { register, login } from 'apis/authApi'
-import { setUser } from 'store/slices/userSlice'
+import { setUser } from 'store/slices/authSlice'
 import { setAccessToken } from 'utils/localStorage'
 import { useAppDispatch } from 'store'
 

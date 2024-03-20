@@ -11,6 +11,7 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import modeReducer from 'store/slices/modeSlice'
+import authReducer from 'store/slices/authSlice'
 import userReducer from 'store/slices/userSlice'
 import postsReducer from 'store/slices/postsSlice'
 import searchReducer from 'store/slices/searchSlice'
@@ -24,6 +25,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   mode: modeReducer,
+  auth: authReducer,
   user: userReducer,
   posts: postsReducer,
   search: searchReducer,

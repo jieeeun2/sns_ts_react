@@ -8,7 +8,7 @@ import { useAppSelector } from 'store'
 
 const HomePage = () => {
   const { userId } = useParams()
-  const loggedInUserInfo = useAppSelector((state) => state.user.entity)
+  const loggedInUserInfo = useAppSelector((state) => state.auth.entity)
 
   return (
     <>
