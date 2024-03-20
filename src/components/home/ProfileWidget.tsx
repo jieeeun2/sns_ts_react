@@ -1,16 +1,15 @@
-import { useNavigate } from 'react-router-dom'
+import { FC } from 'react'
 import styled from 'styled-components'
 import { MdOutlineManageAccounts, MdOutlineLocationOn, MdOutlineWorkOutline } from 'react-icons/md'
 import { IconButton, FlexBetween, Hr, WidgetLayout, Span } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
-import { useAppSelector } from 'store'
+import { User } from 'types/userType'
 
-const ProfileWidget = () => {
-  const { entity } = useAppSelector((state) => state.user)
-  const navigate = useNavigate()
+interface ProfileWidgetProps {
+  loggedInUserInfo: User
+}
 
-  if (!entity) navigate('/login')
-
+const ProfileWidget: FC<ProfileWidgetProps> = ({ loggedInUserInfo }) => {
   const {
     id,
     name,
@@ -21,7 +20,7 @@ const ProfileWidget = () => {
     occupation,
     numberOfVisitorsToday,
     totalNumberOfVisitors,
-  } = entity!
+  } = loggedInUserInfo
 
   const profileComponentProps = {
     isProfileWidget: true,

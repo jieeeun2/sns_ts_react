@@ -4,23 +4,29 @@ import PostListWidget from 'components/home/PostListWidget'
 import PostingWidget from 'components/home/PostingWidget'
 import ProfileWidget from 'components/home/ProfileWidget'
 import { useParams } from 'react-router-dom'
+import { useAppSelector } from 'store'
 
 const HomePage = () => {
   const { userId } = useParams()
+  const loggedInUserInfo = useAppSelector((state) => state.user.entity)
 
   return (
-    <HomePageLayout>
-      <div>
-        <ProfileWidget />
-      </div>
-      <div>
-        {!userId && <PostingWidget />}
-        <PostListWidget userId={userId} />
-      </div>
-      <div>
-        <FriendListWidget />
-      </div>
-    </HomePageLayout>
+    <>
+      {loggedInUserInfo && (
+        <HomePageLayout>
+          <div>
+            <ProfileWidget loggedInUserInfo={loggedInUserInfo} />
+          </div>
+          <div>
+            {!userId && <PostingWidget loggedInUserInfo={loggedInUserInfo} />}
+            <PostListWidget userId={userId} />
+          </div>
+          <div>
+            <FriendListWidget loggedInUserInfo={loggedInUserInfo} />
+          </div>
+        </HomePageLayout>
+      )}
+    </>
   )
 }
 

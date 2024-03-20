@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import styled from 'styled-components'
 import {
   MdOutlineImage,
@@ -12,12 +12,16 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { addPostThunk } from 'store/thunks/postThunks'
 import UploadImage from 'components/common/UploadImage'
 import DynamicHeightTextarea from 'components/element/DynamicHeightTextarea'
+import { User } from 'types/userType'
 
-const PostingWidget = () => {
+interface PostingWidgetProps {
+  loggedInUserInfo: User
+}
+
+const PostingWidget: FC<PostingWidgetProps> = ({ loggedInUserInfo }) => {
   const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
   const [isImageEditable, setIsImageEditable] = useState<boolean>(false)
 
-  const userInfo = useAppSelector((state) => state.user.entity)
   const dispatch = useAppDispatch()
 
   const changeContent = (newContent: string) => {
@@ -33,11 +37,11 @@ const PostingWidget = () => {
   }
 
   const post = async () => {
-    if (!userInfo) return
+    if (!loggedInUserInfo) return
 
     dispatch(
       addPostThunk({
-        userId: userInfo.id,
+        userId: loggedInUserInfo.id,
         content: inputValue.content,
         images: inputValue.images,
       }),
@@ -48,7 +52,7 @@ const PostingWidget = () => {
   return (
     <PostingWidgetLayout>
       <ContentBox>
-        <img src={userInfo?.profileImagePath} />
+        <img src={loggedInUserInfo?.profileImagePath} />
         <DynamicHeightTextarea
           text={inputValue.content}
           changeText={changeContent}
