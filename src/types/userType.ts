@@ -1,12 +1,17 @@
 export interface User {
   id: string
   name: string
-  email: string
-  password: string
   profileImagePath: string
-  friends: string[]
+  friends: Friend[]
   location: string
   occupation: string
   numberOfVisitorsToday: number
   totalNumberOfVisitors: number
+}
+
+interface Friend {
+  id: string
+  name: string
+  profileImagePath: string
+  location: string
 }

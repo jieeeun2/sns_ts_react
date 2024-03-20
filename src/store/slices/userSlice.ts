@@ -1,24 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getUserInfoThunk } from 'store/thunks/userThunks'
 import { User } from 'types/userType'
 
 export interface UserState {
-  user: User | null
+  entity: User | null
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  error: string
 }
 
 const initialState: UserState = {
-  user: null,
+  entity: null,
+  loading: 'idle',
+  error: '',
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload.user
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUserInfoThunk.pending, (state) => {
+        if (state.loading === 'idle') {
+          state.loading = 'pending'
+        }
+      })
+      .addCase(getUserInfoThunk.fulfilled, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.entity = action.payload.user
+        }
+      })
+      .addCase(getUserInfoThunk.rejected, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.error = action.error as string
+        }
+      })
   },
 })
-
-export const { setUser } = userSlice.actions
 
 export default userSlice.reducer
