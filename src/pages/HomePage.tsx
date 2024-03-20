@@ -15,7 +15,7 @@ const HomePage = () => {
       {loggedInUserInfo && (
         <HomePageLayout>
           <div>
-            <ProfileWidget loggedInUserInfo={loggedInUserInfo} />
+            <ProfileWidget loggedInUserInfo={loggedInUserInfo} userId={userId} />
           </div>
           <div>
             {!userId && <PostingWidget loggedInUserInfo={loggedInUserInfo} />}
