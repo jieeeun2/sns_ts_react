@@ -1,21 +1,31 @@
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from 'store'
-import { getPostsThunk } from 'store/thunks/postThunks'
+import { getPostsThunk, getUserPostsThunk } from 'store/thunks/postThunks'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import PostWidget from 'components/home/PostWidget'
 import NoContentWidget from 'components/home/NoContentWidget'
 
-const PostListWidget = () => {
+interface PostListWidgetProps {
+  userId?: string
+}
+
+const PostListWidget: FC<PostListWidgetProps> = ({ userId }) => {
   const dispatch = useAppDispatch()
   const { entities: postList, hasNextPage } = useAppSelector((state) => state.posts)
 
   useEffect(() => {
-    if (postList.length === 0) dispatch(getPostsThunk())
-  }, [])
+    const isFirstRequest: boolean = true
+
+    userId
+      ? dispatch(getUserPostsThunk({ userId, isFirstRequest }))
+      : dispatch(getPostsThunk({ isFirstRequest }))
+  }, [dispatch, userId])
 
   const { lastElementRef } = useInfiniteScroll<HTMLLIElement>(
-    () => hasNextPage && dispatch(getPostsThunk()),
+    () =>
+      hasNextPage &&
+      (userId ? dispatch(getUserPostsThunk({ userId })) : dispatch(getPostsThunk({}))),
   )
 
   return (

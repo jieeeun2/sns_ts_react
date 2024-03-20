@@ -1,9 +1,11 @@
 import { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { WidgetLayout } from 'styles/ReuseableComponent'
 
 interface ProfileProps {
   isProfileWidget?: boolean
+  id: string
   profileImagePath: string
   name: string
   numberOfFriends?: number
@@ -12,13 +14,20 @@ interface ProfileProps {
 
 const Profile: FC<ProfileProps> = ({
   isProfileWidget = false,
+  id,
   profileImagePath,
   name,
   numberOfFriends,
   location,
 }) => {
+  const navigate = useNavigate()
+
+  const goToUserPage = () => {
+    navigate(`/profile/${id}`)
+  }
+
   return (
-    <ProfileLayout $isProfileWidget={isProfileWidget}>
+    <ProfileLayout onClick={goToUserPage} $isProfileWidget={isProfileWidget}>
       <img src={profileImagePath} />
       <div>
         <span className='user_name'>{name}</span>
@@ -37,11 +46,14 @@ const ProfileLayout = styled(WidgetLayout)<{ $isProfileWidget: boolean }>`
   align-items: center;
   gap: 12px;
   padding: ${({ $isProfileWidget }) => $isProfileWidget && '0px'};
+  cursor: pointer;
+  width: fit-content;
 
   & > img {
     width: ${({ $isProfileWidget }) => ($isProfileWidget ? '70px' : '50px')};
     height: ${({ $isProfileWidget }) => ($isProfileWidget ? '70px' : '50px')};
     border-radius: 50%;
+    object-fit: cover;
   }
 
   & > div {

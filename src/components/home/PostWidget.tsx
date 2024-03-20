@@ -5,17 +5,17 @@ import { AiOutlineExport } from 'react-icons/ai'
 import { Button, IconButton, WidgetLayout } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
 import UploadImage from 'components/common/UploadImage'
-import DynamicHeightTextarea from 'components/common/DynamicHeightTextarea'
+import DynamicHeightTextarea from 'components/element/DynamicHeightTextarea'
 import { Post, UpdatePostInputValue } from 'types/postType'
 import { useAppDispatch } from 'store'
 import { deletePostThunk, updatePostThunk } from 'store/thunks/postThunks'
 
 const PostWidget: FC<Post> = ({
   id,
-  userId, //TODO: Profile위젯으로 넘겨주기
-  name, //TODO: Profile위젯으로 넘겨주기
-  profileImagePath, //TODO: Profile위젯으로 넘겨주기
-  location, //TODO: Profile위젯으로 넘겨주기
+  userId,
+  name,
+  profileImagePath,
+  location,
   content,
   imagePaths,
   numberOfLikes,
@@ -85,9 +85,11 @@ const PostWidget: FC<Post> = ({
     dispatch(deletePostThunk({ postId: id }))
   }
 
+  const profileComponentProps = { id: userId, profileImagePath, name, location }
+
   return (
     <PostWidgetLayout>
-      <Profile />
+      <Profile {...profileComponentProps} />
       <ContentBox>
         <UpdateAndDeleteSection>
           {!isUpdateMode ? (
@@ -146,10 +148,6 @@ const PostWidgetLayout = styled(WidgetLayout)`
   width: 500px;
   box-sizing: border-box;
   position: relative;
-
-  & > div {
-    margin: 12px;
-  }
 
   .icon {
     font-size: 22px;

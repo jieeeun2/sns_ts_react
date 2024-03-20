@@ -3,16 +3,19 @@ import FriendListWidget from 'components/home/FriendListWidget'
 import PostListWidget from 'components/home/PostListWidget'
 import PostingWidget from 'components/home/PostingWidget'
 import ProfileWidget from 'components/home/ProfileWidget'
+import { useParams } from 'react-router-dom'
 
 const HomePage = () => {
+  const { userId } = useParams()
+
   return (
     <HomePageLayout>
       <div>
         <ProfileWidget />
       </div>
       <div>
-        <PostingWidget />
-        <PostListWidget />
+        {!userId && <PostingWidget />}
+        <PostListWidget userId={userId} />
       </div>
       <div>
         <FriendListWidget />

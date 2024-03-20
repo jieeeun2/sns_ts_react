@@ -16,20 +16,26 @@ export const addPostThunk = createAsyncThunk(
   },
 )
 
-export const getPostsThunk = createAsyncThunk('posts/getPosts', async (_, { getState }) => {
-  try {
-    const { posts } = getState() as RootState
-    const response = await getPosts({ currentPage: posts.currentPage })
+export const getPostsThunk = createAsyncThunk(
+  'posts/getPosts',
+  async ({ isFirstRequest = false }: { isFirstRequest?: boolean }, { getState }) => {
+    try {
+      const { posts } = getState() as RootState
+      const response = await getPosts({ currentPage: posts.currentPage })
 
-    return response
-  } catch (error) {
-    console.log(error)
-  }
-})
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  },
+)
 
 export const getUserPostsThunk = createAsyncThunk(
   'posts/getUserPosts',
-  async ({ userId }: { userId: string }, { getState }) => {
+  async (
+    { userId, isFirstRequest = false }: { userId: string; isFirstRequest?: boolean },
+    { getState },
+  ) => {
     try {
       const { posts } = getState() as RootState
       const currentPage = posts.currentPage

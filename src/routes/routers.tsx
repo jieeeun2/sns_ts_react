@@ -15,6 +15,11 @@ const routerChildrenData: RouterElement[] = [
     withAuth: true,
   },
   {
+    path: '/profile/:userId',
+    element: <HomePage />,
+    withAuth: true,
+  },
+  {
     path: '/login',
     element: <LoginPage />,
     withAuth: false,

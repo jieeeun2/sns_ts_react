@@ -25,6 +25,7 @@ const ProfileWidget = () => {
 
   const profileComponentProps = {
     isProfileWidget: true,
+    id,
     profileImagePath,
     name,
     numberOfFriends: friends?.length || 0,

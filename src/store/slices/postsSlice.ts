@@ -48,9 +48,14 @@ export const postsSlice = createSlice({
         }
       })
 
-      .addCase(getPostsThunk.pending, (state) => {
+      .addCase(getPostsThunk.pending, (state, action) => {
         if (state.loading === 'idle') {
           state.loading = 'pending'
+          if (action.meta.arg.isFirstRequest) {
+            state.entities = []
+            state.currentPage = 1
+            state.hasNextPage = false
+          }
         }
       })
       .addCase(getPostsThunk.fulfilled, (state, action) => {
@@ -68,9 +73,14 @@ export const postsSlice = createSlice({
         }
       })
 
-      .addCase(getUserPostsThunk.pending, (state) => {
+      .addCase(getUserPostsThunk.pending, (state, action) => {
         if (state.loading === 'idle') {
           state.loading = 'pending'
+          if (action.meta.arg.isFirstRequest) {
+            state.entities = []
+            state.currentPage = 1
+            state.hasNextPage = false
+          }
         }
       })
       .addCase(getUserPostsThunk.fulfilled, (state, action) => {

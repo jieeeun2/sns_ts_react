@@ -11,13 +11,13 @@ import { PostInputValue } from 'types/postType'
 import { useAppDispatch, useAppSelector } from 'store'
 import { addPostThunk } from 'store/thunks/postThunks'
 import UploadImage from 'components/common/UploadImage'
-import DynamicHeightTextarea from 'components/common/DynamicHeightTextarea'
+import DynamicHeightTextarea from 'components/element/DynamicHeightTextarea'
 
 const PostingWidget = () => {
   const [inputValue, setInputValue] = useState<PostInputValue>({ content: '', images: [] })
   const [isImageEditable, setIsImageEditable] = useState<boolean>(false)
 
-  const userInfo = useAppSelector((state) => state.user.user)
+  const userInfo = useAppSelector((state) => state.user.entity)
   const dispatch = useAppDispatch()
 
   const changeContent = (newContent: string) => {
@@ -48,7 +48,7 @@ const PostingWidget = () => {
   return (
     <PostingWidgetLayout>
       <ContentBox>
-        <img src='/images/profileImage.jpg' />
+        <img src={userInfo?.profileImagePath} />
         <DynamicHeightTextarea
           text={inputValue.content}
           changeText={changeContent}
@@ -103,6 +103,7 @@ const ContentBox = styled(FlexBetween)`
   & > img {
     width: 50px;
     height: 50px;
+    object-fit: cover;
     border-radius: 50%;
     margin-top: 0;
     margin-bottom: auto;
