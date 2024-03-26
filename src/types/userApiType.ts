@@ -2,7 +2,7 @@ export interface GetUserInfo {
   userId: string
 }
 
-export interface AddRemoveFriend {
+export interface UpdateFollowingList {
   userId: string
-  friendId: string
+  targetUserId: string
 }

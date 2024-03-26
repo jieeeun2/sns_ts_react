@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { addRemoveFriend, getUserInfo } from 'apis/userApi'
-import { AddRemoveFriend, GetUserInfo } from 'types/userApiType'
+import { updateFollowingList, getUserInfo } from 'apis/userApi'
+import { UpdateFollowingList, GetUserInfo } from 'types/userApiType'
 
 export const getUserInfoThunk = createAsyncThunk(
   'user/getUserInfo',
@@ -15,11 +15,11 @@ export const getUserInfoThunk = createAsyncThunk(
   },
 )
 
-export const addRemoveFriendThunk = createAsyncThunk(
-  'user/addRemoveFriend',
-  async ({ userId, friendId }: AddRemoveFriend) => {
+export const updateFollowingListThunk = createAsyncThunk(
+  'user/updateFollowingList',
+  async ({ userId, targetUserId }: UpdateFollowingList) => {
     try {
-      const response = await addRemoveFriend({ userId, friendId })
+      const response = await updateFollowingList({ userId, targetUserId })
 
       return response
     } catch (error) {

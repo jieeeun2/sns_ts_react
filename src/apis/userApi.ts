@@ -1,5 +1,5 @@
 import { axiosInstance } from 'configs/axiosInstance'
-import { AddRemoveFriend, GetUserInfo } from 'types/userApiType'
+import { UpdateFollowingList, GetUserInfo } from 'types/userApiType'
 
 export const getUserInfo = async ({ userId }: GetUserInfo) => {
   try {
@@ -13,9 +13,9 @@ export const getUserInfo = async ({ userId }: GetUserInfo) => {
   }
 }
 
-export const addRemoveFriend = async ({ userId, friendId }: AddRemoveFriend) => {
+export const updateFollowingList = async ({ userId, targetUserId }: UpdateFollowingList) => {
   try {
-    const response = await axiosInstance(`/user/${userId}/${friendId}`, {
+    const response = await axiosInstance(`/user/${userId}/${targetUserId}`, {
       method: 'PATCH',
     })
 

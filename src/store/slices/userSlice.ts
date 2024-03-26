@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getUserInfoThunk, addRemoveFriendThunk } from 'store/thunks/userThunks'
+import { getUserInfoThunk, updateFollowingListThunk } from 'store/thunks/userThunks'
 import { User } from 'types/userType'
 
 export interface UserState {
@@ -38,18 +38,21 @@ export const userSlice = createSlice({
         }
       })
 
-      .addCase(addRemoveFriendThunk.pending, (state) => {
+      .addCase(updateFollowingListThunk.pending, (state) => {
         if (state.loading === 'idle') {
           state.loading = 'pending'
         }
       })
-      .addCase(addRemoveFriendThunk.fulfilled, (state, action) => {
+      .addCase(updateFollowingListThunk.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
-          state.entity && (state.entity.followings = action.payload.followings)
+          if (state.entity) {
+            state.entity.followers = action.payload.followers
+            state.entity.followings = action.payload.followings
+          }
         }
       })
-      .addCase(addRemoveFriendThunk.rejected, (state, action) => {
+      .addCase(updateFollowingListThunk.rejected, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.error = action.error as string
