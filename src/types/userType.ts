@@ -2,7 +2,8 @@ export interface User {
   id: string
   name: string
   profileImagePath: string
-  friends: Friend[]
+  followers: Friend[]
+  followings: Friend[]
   location: string
   occupation: string
   numberOfVisitorsToday: number

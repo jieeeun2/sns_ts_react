@@ -26,7 +26,7 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ loggedInUserInfo, userId }) => 
     id,
     name,
     profileImagePath,
-    friends,
+    followings,
     location,
     occupation,
     numberOfVisitorsToday,
@@ -38,7 +38,7 @@ const ProfileWidget: FC<ProfileWidgetProps> = ({ loggedInUserInfo, userId }) => 
     id,
     profileImagePath,
     name,
-    numberOfFriends: friends?.length || 0,
+    numberOfFollowings: followings?.length || 0,
   }
 
   return (

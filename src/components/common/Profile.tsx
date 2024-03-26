@@ -8,7 +8,7 @@ interface ProfileProps {
   id: string
   profileImagePath: string
   name: string
-  numberOfFriends?: number
+  numberOfFollowings?: number
   location?: string
 }
 
@@ -17,7 +17,7 @@ const Profile: FC<ProfileProps> = ({
   id,
   profileImagePath,
   name,
-  numberOfFriends,
+  numberOfFollowings,
   location,
 }) => {
   const navigate = useNavigate()
@@ -32,7 +32,7 @@ const Profile: FC<ProfileProps> = ({
       <div>
         <span className='user_name'>{name}</span>
         <span className='user_info'>
-          {isProfileWidget ? `친구수 ${numberOfFriends}명` : `${location}`}
+          {isProfileWidget ? `친구수 ${numberOfFollowings}명` : `${location}`}
         </span>
       </div>
     </ProfileLayout>

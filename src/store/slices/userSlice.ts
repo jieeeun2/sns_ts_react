@@ -46,7 +46,7 @@ export const userSlice = createSlice({
       .addCase(addRemoveFriendThunk.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
-          state.entity && (state.entity.friends = action.payload.friends)
+          state.entity && (state.entity.followings = action.payload.followings)
         }
       })
       .addCase(addRemoveFriendThunk.rejected, (state, action) => {
