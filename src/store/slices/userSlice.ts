@@ -17,7 +17,11 @@ const initialState: UserState = {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.entity = action.payload.user
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserInfoThunk.pending, (state) => {
@@ -60,5 +64,7 @@ export const userSlice = createSlice({
       })
   },
 })
+
+export const { setUser } = userSlice.actions
 
 export default userSlice.reducer
