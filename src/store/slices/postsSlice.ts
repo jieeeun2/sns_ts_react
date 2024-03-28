@@ -38,7 +38,7 @@ export const postsSlice = createSlice({
       .addCase(addPostThunk.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
-          state.entities = [action.payload, ...state.entities]
+          state.entities = [action.payload.post, ...state.entities]
         }
       })
       .addCase(addPostThunk.rejected, (state, action) => {
