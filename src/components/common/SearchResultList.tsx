@@ -26,9 +26,10 @@ const SearchResultList: FC<SearchResultListProps> = ({ isDropdownOpen, setIsDrop
             <CategoryBox>
               <Span className='bold'>사용자</Span>
               <ResultByCategorySection className='users'>
-                {users.map(({ profileImagePath, name, location }, index) => (
+                {users.map(({ id, profileImagePath, name, location }, index) => (
                   <Profile
                     key={index}
+                    id={id}
                     profileImagePath={profileImagePath}
                     name={name}
                     location={location}
@@ -85,11 +86,10 @@ const CategoryBox = styled.div`
 `
 
 const ResultByCategorySection = styled.div`
-  display: grid;
   gap: 8px;
 
   &.users {
-    grid-template-columns: repeat(auto-fill, minmax(calc(25% - 8px), auto));
-    grid-auto-rows: 60px;
+    display: flex;
+    flex-wrap: wrap;
   }
 `
