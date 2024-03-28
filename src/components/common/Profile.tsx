@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { useAppSelector } from 'store'
 import { WidgetLayout } from 'styles/ReuseableComponent'
 
 interface ProfileProps {
@@ -8,6 +9,7 @@ interface ProfileProps {
   id: string
   profileImagePath: string
   name: string
+  numberOfFollowers?: number
   numberOfFollowings?: number
   location?: string
 }
@@ -17,13 +19,15 @@ const Profile: FC<ProfileProps> = ({
   id,
   profileImagePath,
   name,
-  numberOfFollowings,
+  numberOfFollowers = 0,
+  numberOfFollowings = 0,
   location,
 }) => {
   const navigate = useNavigate()
+  const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
 
   const goToUserPage = () => {
-    navigate(`/profile/${id}`)
+    id === loggedInUserId ? navigate('/') : navigate(`/profile/${id}`)
   }
 
   return (
@@ -31,9 +35,14 @@ const Profile: FC<ProfileProps> = ({
       <img src={profileImagePath} />
       <div>
         <span className='user_name'>{name}</span>
-        <span className='user_info'>
-          {isProfileWidget ? `친구수 ${numberOfFollowings}명` : `${location}`}
-        </span>
+        {isProfileWidget ? (
+          <>
+            <span className='user_info'>팔로워 {numberOfFollowers}명</span>
+            <span className='user_info'>팔로잉 {numberOfFollowings}명</span>
+          </>
+        ) : (
+          <span className='user_info'>{location}</span>
+        )}
       </div>
     </ProfileLayout>
   )
@@ -42,12 +51,13 @@ const Profile: FC<ProfileProps> = ({
 export default Profile
 
 const ProfileLayout = styled(WidgetLayout)<{ $isProfileWidget: boolean }>`
+  width: ${({ $isProfileWidget }) => ($isProfileWidget ? '100%' : 'fit-content')};
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   padding: ${({ $isProfileWidget }) => $isProfileWidget && '0px'};
   cursor: pointer;
-  width: fit-content;
+  gap: 8px;
 
   & > img {
     width: ${({ $isProfileWidget }) => ($isProfileWidget ? '70px' : '50px')};
@@ -72,6 +82,24 @@ const ProfileLayout = styled(WidgetLayout)<{ $isProfileWidget: boolean }>`
         font-size: 12px;
         color: ${({ theme }) => theme.neutral.mediumMain};
       }
+    }
+  }
+
+  & > button {
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background: ${({ theme }) => theme.neutral.light};
+    color: ${({ theme }) => theme.primary.dark};
+
+    &:hover {
+      background: ${({ theme }) => theme.primary.light};
+    }
+
+    & > * {
+      font-size: 20px;
     }
   }
 `

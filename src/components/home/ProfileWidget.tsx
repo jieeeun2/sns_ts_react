@@ -1,81 +1,86 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MdOutlineManageAccounts, MdOutlineLocationOn, MdOutlineWorkOutline } from 'react-icons/md'
 import { IconButton, FlexBetween, Hr, WidgetLayout, Span } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
 import { User } from 'types/userType'
 import { useAppDispatch, useAppSelector } from 'store'
-import { getUserInfoThunk } from 'store/thunks/userThunks'
+import { getUserInfo } from 'apis/userApi'
 
 interface ProfileWidgetProps {
-  loggedInUserInfo: User
   userId?: string
 }
 
-const ProfileWidget: FC<ProfileWidgetProps> = ({ loggedInUserInfo, userId }) => {
+const ProfileWidget: FC<ProfileWidgetProps> = ({ userId }) => {
+  const [userInfo, setUserInfo] = useState<User>({
+    id: '',
+    name: '',
+    profileImagePath: '',
+    followers: [],
+    followings: [],
+    location: '',
+    occupation: '',
+    numberOfVisitorsToday: 0,
+    totalNumberOfVisitors: 0,
+  })
+
   const dispatch = useAppDispatch()
-  const selectedUserInfo = useAppSelector((state) => state.user.entity)
+  const loggedInUser = useAppSelector((state) => state.user.entity!)
 
   useEffect(() => {
-    dispatch(getUserInfoThunk({ userId: userId || loggedInUserInfo.id }))
-  }, [dispatch, loggedInUserInfo, userId])
-
-  if (!selectedUserInfo) return null
-
-  const {
-    id,
-    name,
-    profileImagePath,
-    followings,
-    location,
-    occupation,
-    numberOfVisitorsToday,
-    totalNumberOfVisitors,
-  } = selectedUserInfo
+    const fetchUserInfo = async () => {
+      if (userId) {
+        const response = await getUserInfo({ userId })
+        setUserInfo(response.user)
+      } else {
+        setUserInfo(loggedInUser)
+      }
+    }
+    fetchUserInfo()
+  }, [dispatch, loggedInUser, userId])
 
   const profileComponentProps = {
     isProfileWidget: true,
-    id,
-    profileImagePath,
-    name,
-    numberOfFollowings: followings?.length || 0,
+    id: userInfo.id,
+    name: userInfo.name,
+    profileImagePath: userInfo.profileImagePath,
+    numberOfFollowers: userInfo.followers.length,
+    numberOfFollowings: userInfo.followings.length,
   }
 
   return (
-    <>
-      {selectedUserInfo && (
-        <ProfileWidgetLayout>
-          <UserInfoBox>
-            <Profile {...profileComponentProps} />
-            <IconButton>
-              <MdOutlineManageAccounts className='icon' />
-            </IconButton>
-          </UserInfoBox>
-          <Hr />
-          <UserInfoDetailBox>
-            <div>
-              <MdOutlineLocationOn className='icon' />
-              <Span>{location}</Span>
-            </div>
-            <div>
-              <MdOutlineWorkOutline className='icon' />
-              <Span>{occupation}</Span>
-            </div>
-          </UserInfoDetailBox>
-          <Hr />
-          <VisitorInfoBox>
-            <div>
-              <Span>일간 방문자수</Span>
-              <Span className='bold'>{numberOfVisitorsToday}</Span>
-            </div>
-            <div>
-              <Span>총 방문자수</Span>
-              <Span className='bold'>{totalNumberOfVisitors}</Span>
-            </div>
-          </VisitorInfoBox>
-        </ProfileWidgetLayout>
-      )}
-    </>
+    <ProfileWidgetLayout>
+      <UserInfoBox>
+        <Profile {...profileComponentProps} />
+        {loggedInUser.id === userInfo.id && (
+          <IconButton>
+            <MdOutlineManageAccounts className='icon' />
+          </IconButton>
+        )}
+      </UserInfoBox>
+      <Hr />
+      <UserInfoDetailBox>
+        <div>
+          <MdOutlineLocationOn className='icon' />
+          <Span>{userInfo.location}</Span>
+        </div>
+        <div>
+          <MdOutlineWorkOutline className='icon' />
+          <Span>{userInfo.occupation}</Span>
+        </div>
+      </UserInfoDetailBox>
+      <Hr />
+      <VisitorInfoBox>
+        <div>
+          <Span>일간 방문자수</Span>
+          <Span className='bold'>{userInfo.numberOfVisitorsToday}</Span>
+        </div>
+        <div>
+          <Span>총 방문자수</Span>
+          <Span className='bold'>{userInfo.totalNumberOfVisitors}</Span>
+        </div>
+      </VisitorInfoBox>
+    </ProfileWidgetLayout>
   )
 }
 
@@ -94,7 +99,11 @@ const ProfileWidgetLayout = styled(WidgetLayout)`
   }
 `
 
-const UserInfoBox = styled(FlexBetween)``
+const UserInfoBox = styled(FlexBetween)`
+  & > button {
+    margin-left: 8px;
+  }
+`
 
 const UserInfoDetailBox = styled.div`
   & > div {
