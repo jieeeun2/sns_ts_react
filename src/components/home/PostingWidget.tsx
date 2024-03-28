@@ -87,6 +87,7 @@ export default PostingWidget
 const PostingWidgetLayout = styled(WidgetLayout)`
   width: 500px;
   box-sizing: border-box;
+  margin-bottom: 20px;
 
   & > div {
     margin: 12px;

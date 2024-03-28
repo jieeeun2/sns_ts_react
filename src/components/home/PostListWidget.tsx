@@ -46,11 +46,13 @@ const PostListWidget: FC<PostListWidgetProps> = ({ userId }) => {
 export default PostListWidget
 
 const PostListWidgetLayout = styled.ul`
+  width: 500px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 20px;
   list-style: none;
-  margin-top: 20px;
+  margin: 0;
   padding: 0;
 `
 
