@@ -1,7 +1,10 @@
-import { FC } from 'react'
+import { FC, MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { useAppSelector } from 'store'
+import { MdOutlinePersonAdd } from 'react-icons/md'
+import { MdOutlinePersonRemove } from 'react-icons/md'
+import { useAppDispatch, useAppSelector } from 'store'
+import { updateFollowingListThunk } from 'store/thunks/userThunks'
 import { WidgetLayout } from 'styles/ReuseableComponent'
 
 interface ProfileProps {
@@ -24,11 +27,22 @@ const Profile: FC<ProfileProps> = ({
   location,
 }) => {
   const navigate = useNavigate()
-  const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
+  const dispatch = useAppDispatch()
+  const { id: loggedInUserId, followings: myFollowings } = useAppSelector(
+    (state) => state.user.entity!,
+  )
 
   const goToUserPage = () => {
     id === loggedInUserId ? navigate('/') : navigate(`/profile/${id}`)
   }
+
+  const updateFollowingList = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+
+    dispatch(updateFollowingListThunk({ userId: loggedInUserId, targetUserId: id }))
+  }
+
+  const isFollow = myFollowings.some((following) => following.id === id)
 
   return (
     <ProfileLayout onClick={goToUserPage} $isProfileWidget={isProfileWidget}>
@@ -44,6 +58,11 @@ const Profile: FC<ProfileProps> = ({
           <span className='user_info'>{location}</span>
         )}
       </div>
+      {id !== loggedInUserId && (
+        <button onClick={updateFollowingList}>
+          {isFollow ? <MdOutlinePersonRemove /> : <MdOutlinePersonAdd />}
+        </button>
+      )}
     </ProfileLayout>
   )
 }
