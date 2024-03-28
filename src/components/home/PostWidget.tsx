@@ -85,7 +85,7 @@ const PostWidget: FC<Post> = ({
     dispatch(deletePostThunk({ postId: id }))
   }
 
-  const profileComponentProps = { id: userId, profileImagePath, name, location }
+  const profileComponentProps = { isPostWidget: true, id: userId, profileImagePath, name, location }
 
   return (
     <PostWidgetLayout>
@@ -145,7 +145,7 @@ const PostWidget: FC<Post> = ({
 export default PostWidget
 
 const PostWidgetLayout = styled(WidgetLayout)`
-  width: 500px;
+  width: 100%;
   box-sizing: border-box;
   position: relative;
 

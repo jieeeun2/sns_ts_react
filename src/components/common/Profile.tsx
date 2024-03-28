@@ -9,6 +9,7 @@ import { WidgetLayout } from 'styles/ReuseableComponent'
 
 interface ProfileProps {
   isProfileWidget?: boolean
+  isPostWidget?: boolean
   id: string
   profileImagePath: string
   name: string
@@ -19,6 +20,7 @@ interface ProfileProps {
 
 const Profile: FC<ProfileProps> = ({
   isProfileWidget = false,
+  isPostWidget = false,
   id,
   profileImagePath,
   name,
@@ -58,7 +60,7 @@ const Profile: FC<ProfileProps> = ({
           <span className='user_info'>{location}</span>
         )}
       </div>
-      {id !== loggedInUserId && (
+      {!isPostWidget && id !== loggedInUserId && (
         <button onClick={updateFollowingList}>
           {isFollow ? <MdOutlinePersonRemove /> : <MdOutlinePersonAdd />}
         </button>
