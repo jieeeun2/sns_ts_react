@@ -7,12 +7,14 @@ import { IoIosNotifications } from 'react-icons/io'
 import { useAppDispatch, useAppSelector } from 'store'
 import { setMode } from 'store/slices/modeSlice'
 import { Input, IconButton, FlexBetween } from 'styles/ReuseableComponent'
-import { searchThunk } from 'store/thunks/searchThunks'
-import SearchResultList from 'components/common/SearchResultList'
+import { getSearchResult } from 'apis/searchApi'
+import { SearchResultType } from 'types/searchType'
+import SearchResult from 'components/common/SearchResult'
 
 const Header = () => {
   const [searchText, setSearchText] = useState<string>('')
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [searchResult, setSearchResult] = useState<SearchResultType>({ users: [], posts: [] })
 
   const mode = useAppSelector((state) => state.mode.mode)
   const dispatch = useAppDispatch()
@@ -21,8 +23,11 @@ const Header = () => {
     setSearchText(e.target.value)
   }
 
-  const search = () => {
-    dispatch(searchThunk({ searchText })).then(() => setIsDropdownOpen(true))
+  const search = async () => {
+    const response = await getSearchResult({ searchText })
+    if (!response) return
+    setIsDropdownOpen(true)
+    setSearchResult(response.results)
   }
 
   const changeMode = () => {
@@ -47,9 +52,10 @@ const Header = () => {
             <IconButton onClick={search}>
               <FiSearch className='icon' />
             </IconButton>
-            <SearchResultList
+            <SearchResult
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
+              searchResult={searchResult}
             />
           </SearchSection>
         </LogoBox>

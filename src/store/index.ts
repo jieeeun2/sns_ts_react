@@ -13,7 +13,6 @@ import storage from 'redux-persist/lib/storage'
 import modeReducer from 'store/slices/modeSlice'
 import userReducer from 'store/slices/userSlice'
 import postsReducer from 'store/slices/postsSlice'
-import searchReducer from 'store/slices/searchSlice'
 import { useAppDispatch, useAppSelector } from 'store/reduxHooks'
 
 const persistConfig = {
@@ -26,7 +25,6 @@ const rootReducer = combineReducers({
   mode: modeReducer,
   user: userReducer,
   posts: postsReducer,
-  search: searchReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -1,18 +1,23 @@
 import { Dispatch, FC, SetStateAction } from 'react'
 import styled from 'styled-components'
 import { FaArrowAltCircleUp } from 'react-icons/fa'
-import { useAppSelector } from 'store'
 import Profile from 'components/common/Profile'
 import NoContentWidget from 'components/home/NoContentWidget'
 import { IconButton, Span } from 'styles/ReuseableComponent'
+import { SearchResultType } from 'types/searchType'
 
-interface SearchResultListProps {
+interface SearchResultProps {
   isDropdownOpen: boolean
   setIsDropdownOpen: Dispatch<SetStateAction<boolean>>
+  searchResult: SearchResultType
 }
 
-const SearchResultList: FC<SearchResultListProps> = ({ isDropdownOpen, setIsDropdownOpen }) => {
-  const { users, posts } = useAppSelector((state) => state.search.results)
+const SearchResult: FC<SearchResultProps> = ({
+  isDropdownOpen,
+  setIsDropdownOpen,
+  searchResult,
+}) => {
+  const { users, posts } = searchResult
 
   const foldComponent = () => {
     setIsDropdownOpen((prev) => !prev)
@@ -21,7 +26,7 @@ const SearchResultList: FC<SearchResultListProps> = ({ isDropdownOpen, setIsDrop
   return (
     <>
       {isDropdownOpen && (
-        <SearchResultListLayout $isDropdownOpen={isDropdownOpen}>
+        <SearchResultLayout $isDropdownOpen={isDropdownOpen}>
           {users.length > 0 || posts.length > 0 ? (
             <CategoryBox>
               <Span className='bold'>사용자</Span>
@@ -44,15 +49,15 @@ const SearchResultList: FC<SearchResultListProps> = ({ isDropdownOpen, setIsDrop
             검색결과 접기
             <FaArrowAltCircleUp className='icon' />
           </IconButton>
-        </SearchResultListLayout>
+        </SearchResultLayout>
       )}
     </>
   )
 }
 
-export default SearchResultList
+export default SearchResult
 
-const SearchResultListLayout = styled.div<{ $isDropdownOpen: boolean }>`
+const SearchResultLayout = styled.div<{ $isDropdownOpen: boolean }>`
   background: ${({ theme }) => theme.neutral.light};
   opacity: 0.9;
   z-index: 10;
