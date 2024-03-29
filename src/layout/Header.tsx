@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { FiSearch } from 'react-icons/fi'
@@ -23,7 +23,8 @@ const Header = () => {
     setSearchText(e.target.value)
   }
 
-  const search = async () => {
+  const search = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     const response = await getSearchResult({ searchText })
     if (!response) return
     setIsDropdownOpen(true)
@@ -47,9 +48,9 @@ const Header = () => {
           <Link to='/' className='logo'>
             <h1>SOCIOPEDIA</h1>
           </Link>
-          <SearchSection $isDropdownOpen={isDropdownOpen}>
+          <SearchSection onSubmit={search} $isDropdownOpen={isDropdownOpen}>
             <Input onChange={changeSearchText} placeholder='search...' />
-            <IconButton onClick={search}>
+            <IconButton type='submit'>
               <FiSearch className='icon' />
             </IconButton>
             <SearchResult
@@ -113,7 +114,10 @@ const LogoBox = styled.div`
   }
 `
 
-const SearchSection = styled(FlexBetween)<{ $isDropdownOpen: boolean }>`
+const SearchSection = styled.form<{ $isDropdownOpen: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background: ${({ theme }) => theme.neutral.light};
   border-radius: ${({ $isDropdownOpen }) => ($isDropdownOpen ? '8px 8px 0 0' : '8px')};
   height: 40px;
