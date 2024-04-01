@@ -6,6 +6,7 @@ import {
   GetCommentList,
   GetPosts,
   GetUserPosts,
+  RemoveCommentList,
   UpdatePost,
 } from 'types/postApiType'
 
@@ -111,6 +112,18 @@ export const getCommentList = async ({ postId }: GetCommentList) => {
   try {
     const response = await axiosInstance(`/post/${postId}/comment`, {
       method: 'GET',
+    })
+
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const removeCommentList = async ({ postId, commentId }: RemoveCommentList) => {
+  try {
+    const response = await axiosInstance(`/post/${postId}/comment/${commentId}`, {
+      method: 'DELETE',
     })
 
     return response.data.data

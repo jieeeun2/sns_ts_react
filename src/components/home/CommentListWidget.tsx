@@ -44,7 +44,9 @@ const CommentListWidget: FC<CommentListWidgetProps> = ({ postId }) => {
         <Button onClick={postComment}>등록</Button>
       </EditCommentBox>
       <CommentListBox>
-        {commentList?.map((comment, index) => <CommentWidget key={index} {...comment} />)}
+        {commentList?.map((comment, index) => (
+          <CommentWidget key={index} postId={postId} setCommentList={setCommentList} {...comment} />
+        ))}
       </CommentListBox>
     </CommentListWidgetLayout>
   )
@@ -53,10 +55,10 @@ const CommentListWidget: FC<CommentListWidgetProps> = ({ postId }) => {
 export default CommentListWidget
 
 const CommentListWidgetLayout = styled.div`
-  padding: 16px 8px 8px 8px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 
   button {
     width: fit-content;
@@ -81,5 +83,5 @@ const CommentListBox = styled.ul`
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 `

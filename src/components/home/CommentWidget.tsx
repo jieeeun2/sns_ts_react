@@ -1,11 +1,18 @@
-import { FC } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 import styled from 'styled-components'
 import { Button, Input, Span } from 'styles/ReuseableComponent'
 import { useAppSelector } from 'store'
 import { Comment } from 'types/postType'
+import { getCommentList, removeCommentList } from 'apis/postApi'
 
-const CommentWidget: FC<Comment> = ({
+interface CommentWidgetProps extends Comment {
+  postId: string
+  setCommentList: Dispatch<SetStateAction<Comment[]>>
+}
+
+const CommentWidget: FC<CommentWidgetProps> = ({
   id,
+  postId,
   userId,
   name,
   profileImagePath,
@@ -14,6 +21,7 @@ const CommentWidget: FC<Comment> = ({
   isModify,
   createdAt,
   updatedAt,
+  setCommentList,
 }) => {
   const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
 
@@ -21,8 +29,10 @@ const CommentWidget: FC<Comment> = ({
     //TODO: 댓글수정api호출
   }
 
-  const deleteComment = () => {
-    //TODO: 댓글삭제api호출
+  const deleteComment = async () => {
+    await removeCommentList({ postId, commentId: id })
+    const response = await getCommentList({ postId })
+    setCommentList(response.comments)
   }
 
   return (
@@ -38,7 +48,7 @@ const CommentWidget: FC<Comment> = ({
           {isModify && <Span>수정됨</Span>}
         </DividedSection>
       </DividedBox>
-      {userId === loggedInUserId && (
+      {userId === loggedInUserId && !isDelete && (
         <DividedSection>
           <Button onClick={updateComment}>수정</Button>
           <Button onClick={deleteComment}>삭제</Button>
@@ -60,8 +70,8 @@ const CommentWidgetLayout = styled.li`
   }
 
   & > img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
   }

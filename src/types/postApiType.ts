@@ -33,3 +33,8 @@ export interface AddComment {
 export interface GetCommentList {
   postId: string
 }
+
+export interface RemoveCommentList {
+  postId: string
+  commentId: string
+}
