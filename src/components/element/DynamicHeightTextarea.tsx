@@ -17,7 +17,7 @@ const DynamicHeightTextarea: FC<DynamicHeightTextareaProps> = ({ text, changeTex
   const resizeTextArea = () => {
     if (!textAreaRef.current) return
 
-    textAreaRef.current.style.height = 'auto'
+    textAreaRef.current.style.height = '20px'
     textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`
   }
 
@@ -45,7 +45,7 @@ export const Textarea = styled.textarea`
   background: ${({ theme }) => theme.neutral.light};
   color: ${({ theme }) => theme.neutral.dark};
   outline: none;
-  width: 100%;
+  flex-grow: 1;
   box-sizing: border-box;
   padding: 12px;
   resize: none;
