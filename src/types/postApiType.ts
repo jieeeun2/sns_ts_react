@@ -29,3 +29,7 @@ export interface AddComment {
   userId: string
   content: string
 }
+
+export interface GetCommentList {
+  postId: string
+}

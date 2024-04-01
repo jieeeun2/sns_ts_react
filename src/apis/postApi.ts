@@ -3,6 +3,7 @@ import {
   AddComment,
   AddPost,
   DeletePost,
+  GetCommentList,
   GetPosts,
   GetUserPosts,
   UpdatePost,
@@ -98,6 +99,18 @@ export const addComment = async ({ postId, userId, content }: AddComment) => {
     const response = await axiosInstance(`/post/${postId}/comment`, {
       method: 'POST',
       data: { userId, content },
+    })
+
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getCommentList = async ({ postId }: GetCommentList) => {
+  try {
+    const response = await axiosInstance(`/post/${postId}/comment`, {
+      method: 'GET',
     })
 
     return response.data.data
