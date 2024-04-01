@@ -23,3 +23,15 @@ export interface Post {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface Comment {
+  id: string
+  userId: string
+  name: string
+  profileImagePath: string
+  content: string
+  isDelete: boolean
+  isModify: boolean
+  createdAt: Date
+  updatedAt: Date
+}

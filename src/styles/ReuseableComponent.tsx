@@ -22,6 +22,7 @@ export const Button = styled.button`
   background: ${({ theme }) => theme.neutral.light};
   color: ${({ theme }) => theme.neutral.dark};
   width: 60px;
+  height: fit-content;
   border: none;
   border-radius: 8px;
   padding: 8px 12px;

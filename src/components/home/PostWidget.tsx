@@ -5,6 +5,7 @@ import { AiOutlineExport } from 'react-icons/ai'
 import { Button, IconButton, WidgetLayout } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
 import UploadImage from 'components/common/UploadImage'
+import CommentListWidget from 'components/home/CommentListWidget'
 import DynamicHeightTextarea from 'components/element/DynamicHeightTextarea'
 import { Post, UpdatePostInputValue } from 'types/postType'
 import { useAppDispatch } from 'store'
@@ -30,6 +31,7 @@ const PostWidget: FC<Post> = ({
     existingImagePaths: imagePaths,
     imagePathsToDelete: [],
   })
+  const [isCommentVisible, setIsCommentVisible] = useState<boolean>(false)
 
   useEffect(() => {
     if (!isUpdateMode) return
@@ -85,6 +87,10 @@ const PostWidget: FC<Post> = ({
     dispatch(deletePostThunk({ postId: id }))
   }
 
+  const showComment = () => {
+    setIsCommentVisible((prev) => !prev)
+  }
+
   const profileComponentProps = { isPostWidget: true, id: userId, profileImagePath, name, location }
 
   return (
@@ -129,7 +135,7 @@ const PostWidget: FC<Post> = ({
             <MdOutlineFavoriteBorder className='icon' />
             <span>{numberOfLikes}</span>
           </IconButton>
-          <IconButton className='comment'>
+          <IconButton onClick={showComment} className='comment'>
             <MdOutlineChatBubbleOutline className='icon' />
             <span>{numberOfComments}</span>
           </IconButton>
@@ -138,6 +144,7 @@ const PostWidget: FC<Post> = ({
           </IconButton>
         </ReactionSection>
       </ContentBox>
+      {isCommentVisible && <CommentListWidget postId={id} />}
     </PostWidgetLayout>
   )
 }
