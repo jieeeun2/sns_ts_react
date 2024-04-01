@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Button, Input } from 'styles/ReuseableComponent'
 import { Comment } from 'types/postType'
 import CommentWidget from 'components/home/CommentWidget'
+import { addComment } from 'apis/postApi'
+import { useAppSelector } from 'store'
 
 interface CommentListWidgetProps {
   postId: string
@@ -12,6 +14,8 @@ const CommentListWidget: FC<CommentListWidgetProps> = ({ postId }) => {
   const [content, setContent] = useState<string>('')
   const [commentList, setCommentList] = useState<Comment[]>([])
 
+  const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
+
   const changeContent = (e: ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value)
   }
@@ -20,13 +24,16 @@ const CommentListWidget: FC<CommentListWidgetProps> = ({ postId }) => {
     //TODO: 댓글조회api호출
   }
 
-  const postComment = () => {
-    //TODO: 댓글등록api호출
+  const postComment = async () => {
+    const response = await addComment({ postId, userId: loggedInUserId, content })
+    if (!response) return
+    setContent('')
+    setCommentList(response.comments)
   }
 
   useEffect(() => {
     //FIX: 아래는 api호출 구현전 임시데이터. 삭제해야함
-    setCommentList([
+    /* setCommentList([
       {
         id: 'id1',
         userId: '6608f42c8e3c517e7a02d858',
@@ -51,7 +58,7 @@ const CommentListWidget: FC<CommentListWidgetProps> = ({ postId }) => {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ])
+    ]) */
   }, [])
 
   return (

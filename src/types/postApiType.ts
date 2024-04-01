@@ -23,3 +23,9 @@ export interface UpdatePost {
   imagesToAdd: File[]
   imagePathsToDelete: string[]
 }
+
+export interface AddComment {
+  postId: string
+  userId: string
+  content: string
+}
