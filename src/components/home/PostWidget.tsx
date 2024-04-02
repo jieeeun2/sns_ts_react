@@ -8,7 +8,7 @@ import UploadImage from 'components/common/UploadImage'
 import CommentListWidget from 'components/home/CommentListWidget'
 import DynamicHeightTextarea from 'components/element/DynamicHeightTextarea'
 import { Post, UpdatePostInputValue } from 'types/postType'
-import { useAppDispatch } from 'store'
+import { useAppDispatch, useAppSelector } from 'store'
 import { deletePostThunk, updatePostThunk } from 'store/thunks/postThunks'
 
 const PostWidget: FC<Post> = ({
@@ -44,6 +44,7 @@ const PostWidget: FC<Post> = ({
     })
   }, [isUpdateMode, content, imagePaths])
 
+  const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
   const dispatch = useAppDispatch()
 
   const changeUpdateMode = () => {
@@ -97,19 +98,21 @@ const PostWidget: FC<Post> = ({
     <PostWidgetLayout>
       <Profile {...profileComponentProps} />
       <ContentBox>
-        <UpdateAndDeleteSection>
-          {!isUpdateMode ? (
-            <>
-              <Button onClick={changeUpdateMode}>수정</Button>
-              <Button onClick={deletePost}>삭제</Button>
-            </>
-          ) : (
-            <>
-              <Button onClick={updatePost}>수정완료</Button>
-              <Button onClick={cancel}>취소</Button>
-            </>
-          )}
-        </UpdateAndDeleteSection>
+        {loggedInUserId === userId && (
+          <UpdateAndDeleteSection>
+            {!isUpdateMode ? (
+              <>
+                <Button onClick={changeUpdateMode}>수정</Button>
+                <Button onClick={deletePost}>삭제</Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={updatePost}>수정완료</Button>
+                <Button onClick={cancel}>취소</Button>
+              </>
+            )}
+          </UpdateAndDeleteSection>
+        )}
         <ContentSection>
           <DynamicHeightTextarea
             text={inputValue.content}
