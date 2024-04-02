@@ -38,3 +38,9 @@ export interface RemoveCommentList {
   postId: string
   commentId: string
 }
+
+export interface ModifyComment {
+  postId: string
+  commentId: string
+  content: string
+}

@@ -1,9 +1,9 @@
-import { Dispatch, FC, SetStateAction } from 'react'
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Input, Span } from 'styles/ReuseableComponent'
 import { useAppSelector } from 'store'
 import { Comment } from 'types/postType'
-import { getCommentList, removeCommentList } from 'apis/postApi'
+import { getCommentList, modifyComment, removeCommentList } from 'apis/postApi'
 
 interface CommentWidgetProps extends Comment {
   postId: string
@@ -20,14 +20,12 @@ const CommentWidget: FC<CommentWidgetProps> = ({
   isDelete,
   isModify,
   createdAt,
-  updatedAt,
   setCommentList,
 }) => {
-  const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
+  const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false)
+  const [text, setText] = useState<string>(content)
 
-  const updateComment = () => {
-    //TODO: 댓글수정api호출
-  }
+  const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
 
   const deleteComment = async () => {
     await removeCommentList({ postId, commentId: id })
@@ -35,23 +33,54 @@ const CommentWidget: FC<CommentWidgetProps> = ({
     setCommentList(response.comments)
   }
 
+  const changeUpdateMode = (changeToUpdateModeYN: boolean, cancel?: boolean) => {
+    setIsUpdateMode(changeToUpdateModeYN)
+    cancel && setText(content)
+  }
+
+  const changeContent = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value)
+  }
+
+  const updateComment = async () => {
+    const response = await modifyComment({ postId, commentId: id, content: text })
+
+    setCommentList((prev) =>
+      prev.map((comment) => (comment.id == response.comment.id ? response.comment : comment)),
+    )
+    changeUpdateMode(false)
+  }
+
   return (
     <CommentWidgetLayout>
       <img src={profileImagePath} />
       <DividedBox>
         <DividedSection>
-          <span className='name'>{name}</span>
-          {isDelete ? <span>삭제된 게시물입니다</span> : <Input value={content} readOnly />}
-        </DividedSection>
-        <DividedSection>
+          <Span className='name'>{name}</Span>
           <Span>{createdAt.toLocaleString()}</Span>
           {isModify && <Span>수정됨</Span>}
+        </DividedSection>
+        <DividedSection $isUpdateMode={isUpdateMode}>
+          {isDelete ? (
+            <span>삭제된 댓글입니다</span>
+          ) : (
+            <Input value={text} onChange={changeContent} readOnly={!isUpdateMode} />
+          )}
         </DividedSection>
       </DividedBox>
       {userId === loggedInUserId && !isDelete && (
         <DividedSection>
-          <Button onClick={updateComment}>수정</Button>
-          <Button onClick={deleteComment}>삭제</Button>
+          {!isUpdateMode ? (
+            <>
+              <Button onClick={() => changeUpdateMode(true)}>수정</Button>
+              <Button onClick={deleteComment}>삭제</Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={updateComment}>수정완료</Button>
+              <Button onClick={() => changeUpdateMode(false, true)}>취소</Button>
+            </>
+          )}
         </DividedSection>
       )}
     </CommentWidgetLayout>
@@ -65,10 +94,6 @@ const CommentWidgetLayout = styled.li`
   align-items: center;
   gap: 8px;
 
-  span {
-    font-size: 16px;
-  }
-
   & > img {
     width: 40px;
     height: 40px;
@@ -79,17 +104,26 @@ const CommentWidgetLayout = styled.li`
 
 const DividedBox = styled.div`
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `
 
-const DividedSection = styled.div`
+const DividedSection = styled.div<{ $isUpdateMode?: boolean }>`
   display: flex;
   gap: 8px;
 
-  & > span.name {
-    font-weight: 900;
+  & > span {
+    line-height: 20px;
+
+    &.name {
+      font-size: 16px;
+      font-weight: 900;
+    }
   }
 
   & > Input {
-    background: transparent;
+    background: ${({ $isUpdateMode }) => !$isUpdateMode && 'transparent'};
+    padding: ${({ $isUpdateMode }) => $isUpdateMode && '4px 8px'};
   }
 `
