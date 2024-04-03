@@ -5,6 +5,7 @@ import {
   deletePostThunk,
   updatePostThunk,
   getUserPostsThunk,
+  modifyLikeThunk,
 } from 'store/thunks/postThunks'
 import { Post } from 'types/postType'
 
@@ -130,6 +131,26 @@ export const postsSlice = createSlice({
         }
       })
       .addCase(updatePostThunk.rejected, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.error = action.error as string
+        }
+      })
+
+      .addCase(modifyLikeThunk.pending, (state) => {
+        if (state.loading === 'idle') {
+          state.loading = 'pending'
+        }
+      })
+      .addCase(modifyLikeThunk.fulfilled, (state, action) => {
+        if (state.loading === 'pending') {
+          state.loading = 'idle'
+          state.entities = state.entities.map((entity) =>
+            entity.id === action.payload.post.id ? action.payload.post : entity,
+          )
+        }
+      })
+      .addCase(modifyLikeThunk.rejected, (state, action) => {
         if (state.loading === 'pending') {
           state.loading = 'idle'
           state.error = action.error as string

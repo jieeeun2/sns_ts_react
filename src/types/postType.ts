@@ -18,7 +18,7 @@ export interface Post {
   location: string
   content: string
   imagePaths: string[]
-  numberOfLikes: number
+  likes: Map<string, boolean>
   numberOfComments: number
   createdAt: Date
   updatedAt: Date

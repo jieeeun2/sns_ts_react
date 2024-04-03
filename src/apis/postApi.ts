@@ -7,6 +7,7 @@ import {
   GetPosts,
   GetUserPosts,
   ModifyComment,
+  ModifyLike,
   RemoveCommentList,
   UpdatePost,
 } from 'types/postApiType'
@@ -138,6 +139,19 @@ export const modifyComment = async ({ postId, commentId, content }: ModifyCommen
     const response = await axiosInstance(`/post/${postId}/comment/${commentId}`, {
       method: 'PATCH',
       data: { content },
+    })
+
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const modifyLike = async ({ postId, userId }: ModifyLike) => {
+  try {
+    const response = await axiosInstance(`/post/${postId}/like`, {
+      method: 'PATCH',
+      data: { userId },
     })
 
     return response.data.data

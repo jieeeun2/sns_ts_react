@@ -44,3 +44,8 @@ export interface ModifyComment {
   commentId: string
   content: string
 }
+
+export interface ModifyLike {
+  postId: string
+  userId: string
+}
