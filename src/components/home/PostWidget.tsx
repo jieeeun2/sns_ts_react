@@ -1,6 +1,10 @@
 import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { MdOutlineFavoriteBorder, MdOutlineChatBubbleOutline } from 'react-icons/md'
+import {
+  MdOutlineFavorite,
+  MdOutlineFavoriteBorder,
+  MdOutlineChatBubbleOutline,
+} from 'react-icons/md'
 import { AiOutlineExport } from 'react-icons/ai'
 import { Button, IconButton, WidgetLayout } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
@@ -9,7 +13,7 @@ import CommentListWidget from 'components/home/CommentListWidget'
 import DynamicHeightTextarea from 'components/element/DynamicHeightTextarea'
 import { Post, UpdatePostInputValue } from 'types/postType'
 import { useAppDispatch, useAppSelector } from 'store'
-import { deletePostThunk, updatePostThunk } from 'store/thunks/postThunks'
+import { deletePostThunk, modifyLikeThunk, updatePostThunk } from 'store/thunks/postThunks'
 
 const PostWidget: FC<Post> = ({
   id,
@@ -19,7 +23,7 @@ const PostWidget: FC<Post> = ({
   location,
   content,
   imagePaths,
-  numberOfLikes,
+  likes,
   numberOfComments,
   createdAt, //사용X ???
   updatedAt, //TODO: 몇시간전, 몇일전 .. 이런형식으로 바꿔주기
@@ -46,6 +50,9 @@ const PostWidget: FC<Post> = ({
 
   const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
   const dispatch = useAppDispatch()
+
+  const isLiked = likes[loggedInUserId]
+  const numberOfLikes = Object.keys(likes).length
 
   const changeUpdateMode = () => {
     setIsUpdateMode(true)
@@ -86,6 +93,10 @@ const PostWidget: FC<Post> = ({
 
   const deletePost = () => {
     dispatch(deletePostThunk({ postId: id }))
+  }
+
+  const patchLike = () => {
+    dispatch(modifyLikeThunk({ postId: id, userId: loggedInUserId }))
   }
 
   const showComment = () => {
@@ -134,8 +145,12 @@ const PostWidget: FC<Post> = ({
           </>
         </ContentSection>
         <ReactionSection>
-          <IconButton className='like'>
-            <MdOutlineFavoriteBorder className='icon' />
+          <IconButton onClick={patchLike} className='like'>
+            {isLiked ? (
+              <MdOutlineFavorite className='icon fill' />
+            ) : (
+              <MdOutlineFavoriteBorder className='icon' />
+            )}
             <span>{numberOfLikes}</span>
           </IconButton>
           <IconButton onClick={showComment} className='comment'>
@@ -206,6 +221,10 @@ const ReactionSection = styled.div`
   & > button {
     background: none;
     gap: 4px;
+
+    &.like > .icon.fill {
+      color: ${({ theme }) => theme.primary.main};
+    }
 
     &.share {
       position: absolute;
