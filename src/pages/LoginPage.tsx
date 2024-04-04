@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { register, login } from 'apis/authApi'
-import { setUser } from 'store/slices/authSlice'
+import { setUser } from 'store/slices/userSlice'
 import { setAccessToken } from 'utils/localStorage'
 import { useAppDispatch } from 'store'
 
@@ -8,17 +8,13 @@ const LoginPage = () => {
   const dispatch = useAppDispatch()
 
   const temporaryRegister = async () => {
-    const response = await fetch('images/nasa-hubble-space-telescope-zhCVbS0raD8-unsplash.jpg')
+    const response = await fetch('images/manager.jpg')
     const imageBlob = await response.blob()
 
-    const profileImage = new File(
-      [imageBlob],
-      'nasa-hubble-space-telescope-zhCVbS0raD8-unsplash.jpg',
-      { type: 'image/jpeg' },
-    )
+    const profileImage = new File([imageBlob], 'manager.jpg', { type: 'image/jpg' })
 
     const mockData = {
-      name: '관리자',
+      name: 'manager',
       email: 'manager@sociopedia.com',
       password: 'manager',
       profileImage,
