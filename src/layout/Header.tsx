@@ -4,20 +4,18 @@ import styled from 'styled-components'
 import { FiSearch } from 'react-icons/fi'
 import { MdDarkMode, MdLightMode, MdMessage, MdHelp } from 'react-icons/md'
 import { IoIosNotifications } from 'react-icons/io'
-import { useAppDispatch, useAppSelector } from 'store'
-import { setMode } from 'store/slices/modeSlice'
 import { Input, IconButton, FlexBetween } from 'styles/ReuseableComponent'
 import { getSearchResult } from 'apis/searchApi'
 import { SearchResultType } from 'types/searchType'
 import SearchResult from 'components/common/SearchResult'
+import useModeContext from 'context/hooks/useModeContext'
 
 const Header = () => {
   const [searchText, setSearchText] = useState<string>('')
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [searchResult, setSearchResult] = useState<SearchResultType>({ users: [], posts: [] })
 
-  const mode = useAppSelector((state) => state.mode.mode)
-  const dispatch = useAppDispatch()
+  const { mode, changeMode } = useModeContext()
 
   const changeSearchText = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value)
@@ -31,8 +29,8 @@ const Header = () => {
     setSearchResult(response.results)
   }
 
-  const changeMode = () => {
-    dispatch(setMode())
+  const toggleMode = () => {
+    changeMode()
   }
 
   const checkNotification = () => {}
@@ -61,7 +59,7 @@ const Header = () => {
           </SearchSection>
         </LogoBox>
         <MenuBox>
-          <IconButton onClick={changeMode}>
+          <IconButton onClick={toggleMode}>
             {mode === 'dark' ? <MdLightMode className='icon' /> : <MdDarkMode className='icon' />}
           </IconButton>
           <IconButton onClick={checkNotification}>

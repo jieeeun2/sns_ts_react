@@ -1,16 +1,15 @@
 import { FC, ReactNode } from 'react'
-import { useSelector } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
-import { RootState } from 'store'
 import { themeSettings } from 'styles/theme'
 import GlobalStyle from 'styles/GlobalStyle'
+import useModeContext from 'context/hooks/useModeContext'
 
 interface ModeProviderProps {
   children: ReactNode
 }
 
 const StyleProvider: FC<ModeProviderProps> = ({ children }) => {
-  const mode = useSelector((state: RootState) => state.mode.mode)
+  const { mode } = useModeContext()
   const theme = themeSettings(mode)
 
   return (

@@ -10,7 +10,6 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import modeReducer from 'store/slices/modeSlice'
 import userReducer from 'store/slices/userSlice'
 import postsReducer from 'store/slices/postsSlice'
 import { useAppDispatch, useAppSelector } from 'store/reduxHooks'
@@ -22,7 +21,6 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-  mode: modeReducer,
   user: userReducer,
   posts: postsReducer,
 })
