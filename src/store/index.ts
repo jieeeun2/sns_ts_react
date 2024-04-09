@@ -12,7 +12,8 @@ import {
 import storage from 'redux-persist/lib/storage'
 import userReducer from 'store/slices/userSlice'
 import postsReducer from 'store/slices/postsSlice'
-import { useAppDispatch, useAppSelector } from 'store/reduxHooks'
+import { useAppDispatch } from 'store/hooks/useAppDispatch'
+import { useAppSelector } from 'store/hooks/useAppSelector'
 
 const persistConfig = {
   key: 'root',
