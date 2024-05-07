@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 const TIME_ZONE_OFFSET = 9
 
@@ -11,13 +11,19 @@ const MONTHS_PER_YEAR = 12
 
 const useTimeAgo = (timestamp: Date) => {
   const [timeAgo, setTimeAgo] = useState<string>('')
+  const [isTimeAgoMode, setIsTimeAgoMode] = useState<boolean>(true)
+
+  const previousTime = useMemo(() => {
+    const timestampDate = new Date(timestamp)
+    //new Date를 하면 kst로 변환되어 +9시간 되는데 이미 db에 kst로 변환되어 저장되어있기때문에 아래처럼 함
+    timestampDate.setHours(timestampDate.getHours() - TIME_ZONE_OFFSET)
+
+    return timestampDate
+  }, [timestamp])
 
   useEffect(() => {
     const calculateTimeAgo = () => {
       const currentTime = new Date()
-      const previousTime = new Date(timestamp)
-      //new Date를 하면 kst로 변환되어 +9시간 되는데 이미 db에 kst로 변환되어 저장되어있기때문에 아래처럼 함
-      previousTime.setHours(previousTime.getHours() - TIME_ZONE_OFFSET)
 
       const timeDifference = currentTime.getTime() - previousTime.getTime()
 
@@ -41,9 +47,13 @@ const useTimeAgo = (timestamp: Date) => {
     calculateTimeAgo() // 처음 한 번은 직접 호출
 
     return () => clearInterval(interval)
-  }, [timestamp])
+  }, [previousTime])
 
-  return timeAgo
+  const toggleTimeMode = () => {
+    setIsTimeAgoMode((prev) => !prev)
+  }
+
+  return { timeAgo, isTimeAgoMode, previousTime, toggleTimeMode }
 }
 
 export default useTimeAgo

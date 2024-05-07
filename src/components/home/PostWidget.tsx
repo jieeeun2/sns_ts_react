@@ -52,7 +52,7 @@ const PostWidget: FC<Post> = ({
   const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
   const dispatch = useAppDispatch()
 
-  const timeAgo = useTimeAgo(createdAt)
+  const { timeAgo, isTimeAgoMode, previousTime, toggleTimeMode } = useTimeAgo(createdAt)
 
   const isLiked = likes[loggedInUserId]
   const numberOfLikes = Object.keys(likes).length
@@ -147,7 +147,9 @@ const PostWidget: FC<Post> = ({
             )}
           </>
           <div>
-            <Span>{timeAgo}</Span>
+            <Span onClick={toggleTimeMode} className='timeAgo'>
+              {isTimeAgoMode ? timeAgo : previousTime.toLocaleString()}
+            </Span>
             {createdAt !== updatedAt && <Span>(수정됨)</Span>}
           </div>
         </ContentSection>
@@ -224,6 +226,10 @@ const ContentSection = styled.div`
     margin-right: 12px;
     display: flex;
     gap: 4px;
+
+    & > span.timeAgo {
+      cursor: pointer;
+    }
   }
 `
 
