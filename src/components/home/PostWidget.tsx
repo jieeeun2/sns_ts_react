@@ -6,7 +6,7 @@ import {
   MdOutlineChatBubbleOutline,
 } from 'react-icons/md'
 import { AiOutlineExport } from 'react-icons/ai'
-import { Button, IconButton, WidgetLayout } from 'styles/ReuseableComponent'
+import { Button, IconButton, Span, WidgetLayout } from 'styles/ReuseableComponent'
 import Profile from 'components/common/Profile'
 import UploadImage from 'components/common/UploadImage'
 import CommentListWidget from 'components/home/CommentListWidget'
@@ -14,6 +14,7 @@ import DynamicHeightTextarea from 'components/element/DynamicHeightTextarea'
 import { Post, UpdatePostInputValue } from 'types/postType'
 import { useAppDispatch, useAppSelector } from 'store'
 import { deletePostThunk, modifyLikeThunk, updatePostThunk } from 'store/thunks/postThunks'
+import useTimeAgo from 'hooks/useTimeAgo'
 
 const PostWidget: FC<Post> = ({
   id,
@@ -25,8 +26,8 @@ const PostWidget: FC<Post> = ({
   imagePaths,
   likes,
   numberOfComments,
-  createdAt, //사용X ???
-  updatedAt, //TODO: 몇시간전, 몇일전 .. 이런형식으로 바꿔주기
+  createdAt,
+  updatedAt,
 }) => {
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<UpdatePostInputValue>({
@@ -50,6 +51,8 @@ const PostWidget: FC<Post> = ({
 
   const { id: loggedInUserId } = useAppSelector((state) => state.user.entity!)
   const dispatch = useAppDispatch()
+
+  const timeAgo = useTimeAgo(createdAt)
 
   const isLiked = likes[loggedInUserId]
   const numberOfLikes = Object.keys(likes).length
@@ -143,6 +146,10 @@ const PostWidget: FC<Post> = ({
               />
             )}
           </>
+          <div>
+            <Span>{timeAgo}</Span>
+            {createdAt !== updatedAt && <Span>(수정됨)</Span>}
+          </div>
         </ContentSection>
         <ReactionSection>
           <IconButton onClick={patchLike} className='like'>
@@ -210,6 +217,13 @@ const ContentSection = styled.div`
 
   img {
     width: 100%;
+  }
+
+  div {
+    margin-left: auto;
+    margin-right: 12px;
+    display: flex;
+    gap: 4px;
   }
 `
 
