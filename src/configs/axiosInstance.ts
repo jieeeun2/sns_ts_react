@@ -1,7 +1,7 @@
 import axios /* , { AxiosError }  */ from 'axios'
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: process.env.BASE_URL || 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
