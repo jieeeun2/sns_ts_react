@@ -20,7 +20,7 @@ const useInfiniteScroll = <L extends HTMLLIElement>(onIntersect: () => void) => 
 
     lastElementRef.current && observer.observe(lastElementRef.current)
     return () => observer.disconnect()
-  }, [onScroll, lastElementRef.current])
+  }, [onScroll])
 
   return { lastElementRef }
 }
